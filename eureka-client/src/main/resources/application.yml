@@ -1,5 +1,6 @@
+
 server:
-  port: 2222
+  port: 2333
 
 eureka:
   client:
@@ -8,3 +9,5 @@ eureka:
 spring:
   application:
     name: client1
+  profiles:
+    active: test
