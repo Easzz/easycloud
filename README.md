@@ -1,0 +1,2 @@
+# easycloud
+simple springcloud project
