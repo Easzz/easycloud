@@ -3,8 +3,8 @@ package com.findshen.modules.bz.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.findshen.modules.bz.entity.Student;
+import com.findshen.modules.bz.entity.People;
 
-public interface StudentService extends IService<Student> {
+public interface PeopleService extends IService<People> {
 
 }

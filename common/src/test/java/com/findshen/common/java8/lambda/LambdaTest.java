@@ -8,7 +8,7 @@ import java.util.function.IntBinaryOperator;
 public class LambdaTest {
 	//java的lambda表达式通常用(argument)->{body}的语法书写
 	public static void main(String[] args) {
-		IntBinaryOperator intBinaryOperator = (int a, int b) -> a + b;
+		IntBinaryOperator intBinaryOperator = Integer::sum;
 		System.out.println(intBinaryOperator.applyAsInt(1, 2));
 
 
