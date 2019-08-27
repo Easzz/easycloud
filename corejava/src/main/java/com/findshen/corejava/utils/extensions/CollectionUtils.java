@@ -1,7 +1,7 @@
 package com.findshen.corejava.utils.extensions;
 
 
-import com.easzz.corejava.utils.enums.SortDirection;
+import com.findshen.corejava.utils.enums.SortDirection;
 
 import java.math.BigDecimal;
 import java.util.*;

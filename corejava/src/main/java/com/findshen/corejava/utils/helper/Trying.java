@@ -1,6 +1,7 @@
 package com.findshen.corejava.utils.helper;
 
-import com.easzz.corejava.utils.extensions.UtilsException;
+
+import com.findshen.corejava.utils.extensions.UtilsException;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;

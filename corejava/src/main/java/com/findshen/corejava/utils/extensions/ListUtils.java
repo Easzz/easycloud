@@ -1,8 +1,8 @@
 package com.findshen.corejava.utils.extensions;
 
 
-import com.easzz.corejava.utils.enums.SortDirection;
-import com.easzz.corejava.utils.helper.Trying;
+import com.findshen.corejava.utils.enums.SortDirection;
+import com.findshen.corejava.utils.helper.Trying;
 
 import java.util.*;
 import java.util.function.BiConsumer;
