@@ -12,22 +12,24 @@ import java.util.Date;
  */
 @Component
 public class MyMetaObjectHandler implements MetaObjectHandler {
-	@Override
-	public void insertFill(MetaObject metaObject) {
-		//final Object createTime = getFieldValByName("gmtCreate", metaObject);
-		//if (null == createTime) {
+    @Override
+    public void insertFill(MetaObject metaObject) {
+        //final Object createTime = getFieldValByName("gmtCreate", metaObject);
+        //if (null == createTime) {
+        boolean createTime = metaObject.hasGetter("createTime");
+        if (createTime) {
+            //java bean中的属性名称
+            this.setFieldValByName("createTime", new Date(), metaObject);
+        }
 
-		//java bean中的属性名称
-		this.setFieldValByName("createTime", new Date(), metaObject);
-		//	}
-	}
+    }
 
-	@Override
-	public void updateFill(MetaObject metaObject) {
-		//final Object gmtModified = getFieldValByName("gmtModified", metaObject);
+    @Override
+    public void updateFill(MetaObject metaObject) {
+        //final Object gmtModified = getFieldValByName("gmtModified", metaObject);
 
-		//if (null == gmtModified) {
-		//setFieldValByName("gmtModified", new Date(), metaObject);
-		//}
-	}
+        //if (null == gmtModified) {
+        //setFieldValByName("gmtModified", new Date(), metaObject);
+        //}
+    }
 }
