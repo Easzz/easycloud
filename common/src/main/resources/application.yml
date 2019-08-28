@@ -53,6 +53,8 @@ mybatis-plus:
       logic-delete-value: -1
       logic-not-delete-value: 0
     banner: false
+    #自定义填充策略接口实现 3.X版本不需要写入此配置文件
+    #meta-object-handler: com.findshen.modules.bz.config.MyMetaObjectHandler
   #原生配置
   configuration:
     map-underscore-to-camel-case: true

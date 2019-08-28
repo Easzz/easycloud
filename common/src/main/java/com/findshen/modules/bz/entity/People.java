@@ -9,7 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @TableName("bz_people")
 @Data
@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class People {
     /**
-     * @TableId和@TableField 不能同时使用，如果数据库中主键名称是id，实体属性是userId，你可以这样映射@TableId("id")
      * <p>
      * 主键策略6种：
      * AUTO(0),
@@ -40,7 +39,7 @@ public class People {
 
     private Long managerId;
 
-    private LocalDateTime createTime;
+    private Date createTime;
 
     /**
      * 排除非表字段的三种方式

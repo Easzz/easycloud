@@ -152,7 +152,10 @@ public class CommonApplicationTests {
         List<People> list = peopleService.list(peopleLambdaQueryWrapper);
         list.forEach(System.out::println);
 
-        IPage<People> d = peopleService.lambdaQuery().likeRight(People::getName, "d").and(eq -> eq.lt(People::getAge, 40).or().isNotNull(People::getEmail)).page(new Page<>(1, 2));
+        IPage<People> d = peopleService.lambdaQuery()
+                .likeRight(People::getName, "d")
+                .and(eq -> eq.lt(People::getAge, 40).or().isNotNull(People::getEmail))
+                .page(new Page<>(1, 2));
         d.getRecords().forEach(System.out::println);
 
     }
