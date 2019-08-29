@@ -55,6 +55,8 @@ mybatis-plus:
     banner: false
     #自定义填充策略接口实现 3.X版本不需要写入此配置文件
     #meta-object-handler: com.findshen.modules.bz.config.MyMetaObjectHandler
+    #注意！！全局配置 sqlParserCache 设置为 true 才生效。(3.1.1开始不再需要这一步)
+    sql-parser-cache: true
   #原生配置
   configuration:
     map-underscore-to-camel-case: true

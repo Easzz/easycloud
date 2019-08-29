@@ -1,6 +1,7 @@
 
 package com.findshen.modules.bz.dao;
 
+import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -15,6 +16,7 @@ import java.util.List;
 @Mapper
 public interface PeopleDao extends BaseMapper<People> {
 
+	@SqlParser(filter = true)
 	List<People> selectVoList(Page<People> peoplePage,@Param(Constants.WRAPPER) QueryWrapper<People> peopleQueryWrapper);
 
 	List<People> selectVoList4Lambda(Page<People> peoplePage, @Param(Constants.WRAPPER)LambdaQueryWrapper<People> lambda);
