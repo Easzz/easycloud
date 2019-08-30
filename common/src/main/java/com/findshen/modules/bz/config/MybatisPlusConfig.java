@@ -1,18 +1,11 @@
 package com.findshen.modules.bz.config;
 
-import com.baomidou.mybatisplus.core.parser.ISqlParser;
 import com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.tenant.TenantHandler;
-import com.baomidou.mybatisplus.extension.plugins.tenant.TenantSqlParser;
-import net.sf.jsqlparser.expression.Expression;
-import net.sf.jsqlparser.expression.LongValue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-
-import java.util.ArrayList;
 
 /**
  * mybatis plus 插件配置类
@@ -28,33 +21,33 @@ public class MybatisPlusConfig {
     public PaginationInterceptor paginationInterceptor() {
         PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
         //多租户,在解析sql时设置
-        ArrayList<ISqlParser> sqlParsers = new ArrayList<>();
-        TenantSqlParser tenantSqlParser = new TenantSqlParser();
-        tenantSqlParser.setTenantHandler(new TenantHandler() {
-            @Override
-            public Expression getTenantId() {
-                //读取当前用户所属租户
-                //获取租户值，从session或配置文件等处取出
-                return new LongValue(1L);
-            }
-
-            @Override
-            public String getTenantIdColumn() {
-                //设置多租户字段
-                return "manager_id";
-            }
-
-            @Override
-            public boolean doTableFilter(String tableName) {
-                //若某些表不需要增加租户信息，则return true
-                if ("role".equals(tableName)) {
-                    return true;
-                }
-                return false;
-            }
-        });
-        sqlParsers.add(tenantSqlParser);
-        paginationInterceptor.setSqlParserList(sqlParsers);
+//        ArrayList<ISqlParser> sqlParsers = new ArrayList<>();
+//        TenantSqlParser tenantSqlParser = new TenantSqlParser();
+//        tenantSqlParser.setTenantHandler(new TenantHandler() {
+//            @Override
+//            public Expression getTenantId() {
+//                //读取当前用户所属租户
+//                //获取租户值，从session或配置文件等处取出
+//                return new LongValue(1L);
+//            }
+//
+//            @Override
+//            public String getTenantIdColumn() {
+//                //设置多租户字段
+//                return "manager_id";
+//            }
+//
+//            @Override
+//            public boolean doTableFilter(String tableName) {
+//                //若某些表不需要增加租户信息，则return true
+//                if ("role".equals(tableName)) {
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+//        sqlParsers.add(tenantSqlParser);
+//        paginationInterceptor.setSqlParserList(sqlParsers);
 
 //        paginationInterceptor.setSqlParserFilter(new ISqlParserFilter() {
 //            @Override
