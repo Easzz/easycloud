@@ -54,7 +54,7 @@ public class CommonApplicationTests {
          */
 		//People people = peopleService.getOne(Wrappers.<People>lambdaQuery().gt(People::getAge, 20));
 		//People age1 = peopleDao.selectOne(new QueryWrapper<People>().gt("age", 20));
-		People age = peopleService.getOne(new QueryWrapper<People>().gt("age", 20));
+		People age = peopleService.getOne(new QueryWrapper<People>().gt("age", 5));
 		log.info(" IService getOne - " + age);
 	}
 
@@ -86,6 +86,7 @@ public class CommonApplicationTests {
          */
 		queryWrapper.in("age", Arrays.asList(30, 31, 34, 18)).last("limit 1")
 				.select(People.class, info -> !info.getColumn().equals("create_time") && !info.getColumn().equals("manager_id"));
+
 		List<People> peopleList = peopleService.list(queryWrapper);
 		peopleList.forEach(System.out::print);
 	}
@@ -102,6 +103,8 @@ public class CommonApplicationTests {
          */
 		peopleLambdaQueryWrapper.likeRight(People::getName, "d").and(lqw -> lqw.lt(People::getAge, 40).or()
 				.isNotNull(People::getEmail));
+
+
 
 		List<People> list = peopleService.list(peopleLambdaQueryWrapper);
 		list.forEach(System.out::println);
@@ -132,6 +135,7 @@ public class CommonApplicationTests {
 	public void saveBatch() {
 		People people1 = People.builder().name("batch1").age(19).email("792171677@qq.com").build();
 		People people2 = People.builder().name("batch2").age(20).email("792171678@qq.com").build();
+
         /*
         DEBUG==>  Preparing: INSERT INTO people ( name, age, email ) VALUES ( ?, ?, ? )
         DEBUG==> Parameters: batch1(String), 19(Integer), 792171677@qq.com(String)
@@ -168,6 +172,7 @@ public class CommonApplicationTests {
         UPDATE people SET age=? WHERE age = ?
          */
 		boolean update = peopleService.lambdaUpdate().eq(People::getAge, 20).set(People::getAge, 22).update();
+
 		log.info(" lambdaUpdate - " + update);
 	}
 
@@ -176,7 +181,9 @@ public class CommonApplicationTests {
 	 */
 	@Test
 	public void updateNull() {
+
 		peopleService.lambdaUpdate().eq(People::getId, "1").set(People::getAge, null).update();
+
 	}
 
 

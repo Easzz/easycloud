@@ -11,15 +11,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PeopleServiceImpl extends ServiceImpl<PeopleDao, People> implements PeopleService {
-	@Override
-	public Page<People> selectVoList(Page<People> peoplePage, QueryWrapper<People> peopleQueryWrapper) {
-		String customSqlSegment = peopleQueryWrapper.getCustomSqlSegment();
-		System.out.println("customSqlSegment" + customSqlSegment);
-		return peoplePage.setRecords(this.baseMapper.selectVoList(peoplePage, peopleQueryWrapper));
-	}
+    @Override
+    public Page<People> selectVoList(Page<People> peoplePage, QueryWrapper<People> peopleQueryWrapper) {
+        String customSqlSegment = peopleQueryWrapper.getCustomSqlSegment();
+        System.out.println("customSqlSegment" + customSqlSegment);
+		// TODO: 2019/8/30 查询出来数据 筛选，重新计算分页
+        return peoplePage.setRecords(this.baseMapper.selectVoList(peoplePage, peopleQueryWrapper));
+    }
 
-	@Override
-	public Page<People> selectVoList4Lambda(Page<People> peoplePage, LambdaQueryWrapper<People> lambda) {
-		return peoplePage.setRecords(this.baseMapper.selectVoList4Lambda(peoplePage, lambda));
-	}
+    @Override
+    public Page<People> selectVoList4Lambda(Page<People> peoplePage, LambdaQueryWrapper<People> lambda) {
+        return peoplePage.setRecords(this.baseMapper.selectVoList4Lambda(peoplePage, lambda));
+    }
 }

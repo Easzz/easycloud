@@ -79,7 +79,7 @@ public class MybatisPlusConfig {
         //格式化sql
         performanceInterceptor.setFormat(true);
         //最大执行时间，超过则失败
-        performanceInterceptor.setMaxTime(2000);
+        //performanceInterceptor.setMaxTime(1);
         return performanceInterceptor;
     }
 
