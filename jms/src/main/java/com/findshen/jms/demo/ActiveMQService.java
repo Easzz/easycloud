@@ -1,11 +1,9 @@
 package com.findshen.jms.demo;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedReader;
-import java.io.File;
+//
 
 @Component
 public class ActiveMQService {
