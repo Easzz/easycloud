@@ -21,6 +21,8 @@ public class CollectionCalculate {
         list2.add("4444");
         list2.add("5555");
 
+
+
         //交集
         List<String> collect = list1.stream().filter(list2::contains).collect(Collectors.toList());
         System.out.println(collect);
