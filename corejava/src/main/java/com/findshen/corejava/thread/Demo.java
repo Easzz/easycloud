@@ -9,16 +9,17 @@ import java.util.concurrent.Executors;
 public class Demo {
 	public Integer count = 0;
 	public static void main(String[] args) {
+
+		new Thread(()->{
+			System.out.println(1);
+		}).start();
+
+
 		final Demo demo = new Demo();
 		Executor executor = Executors.newFixedThreadPool(10);
 
 		for(int i=0;i<1000;i++){
-			executor.execute(new Runnable() {
-				@Override
-				public void run() {
-					demo.count++;
-				}
-			});
+			executor.execute(() -> demo.count++);
 		}
 		try {
 			Thread.sleep(1000);
