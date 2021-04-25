@@ -9,12 +9,15 @@ package com.findshen.corejava.pattern.strategy;
 public class Client {
 	public static void main(String[] args) {
 		Comparable c = new Cat(10);
-		Cat a1 = new Cat(20);
 
-		CompareContext compare = new CompareContext(c);
+		Integer a1=100;
 
-		Integer integer = compare.compareTo(a1);
-		System.out.println(integer);
+		CompareContext cc=new CompareContext(o -> o>a1);
+
+
+		Boolean aBoolean = cc.compareTo(12);
+
+		System.out.println(aBoolean);
 
 	}
 }

@@ -19,13 +19,9 @@ public class Cat implements Comparable {
 		this.height = height;
 	}
 
+
 	@Override
-	public Integer compare(Object o) {
-		if (o instanceof Cat) {
-			if (this.getHeight() > ((Cat) o).getHeight()) {
-				return 1;
-			}
-		}
-		return 0;
+	public Boolean compare(Integer o) {
+		return null;
 	}
 }

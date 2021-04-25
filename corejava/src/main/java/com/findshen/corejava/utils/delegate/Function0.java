@@ -32,4 +32,7 @@ public class Function0<T> {
         }
         return null;
     }
+    public static void main(String[] args){
+
+    }
 }

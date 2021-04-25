@@ -20,6 +20,7 @@
         <module>shiro-demo</module>
         <module>corejava</module>
         <module>jms</module>
+        <module>stock</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -96,11 +97,11 @@
             <version>${mysql.version}</version>
         </dependency>
 
-        <!--<dependency>-->
-            <!--<groupId>com.alibaba</groupId>-->
-            <!--<artifactId>druid-spring-boot-starter</artifactId>-->
-            <!--<version>${druid.version}</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>${druid.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>

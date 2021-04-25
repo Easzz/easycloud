@@ -9,26 +9,34 @@ import java.util.function.Consumer;
  */
 public class Action1<T> {
 
-    /**
-     * 委托对象
-     */
-    private Consumer<T> consumer;
+	/**
+	 * 委托对象
+	 */
+	private Consumer<T> consumer;
 
-    /**
-     * 构造
-     * @param consumer 委托对象
-     */
-    public Action1(Consumer<T> consumer){
-        this.consumer = consumer;
-    }
+	/**
+	 * 构造
+	 *
+	 * @param consumer 委托对象
+	 */
+	public Action1(Consumer<T> consumer) {
+		this.consumer = consumer;
+	}
 
-    /**
-     * 执行委托
-     * @param t 执行参数
-     */
-    public void invoke(T t){
-        if(this.consumer != null){
-            consumer.accept(t);
-        }
-    }
+	/**
+	 * 执行委托
+	 *
+	 * @param t 执行参数
+	 */
+	public void invoke(T t) {
+		if (this.consumer != null) {
+			consumer.accept(t);
+		}
+	}
+
+	public static void main(String[] args) {
+		Action1<Integer> action1 = new Action1<>(System.out::println);
+		action1.invoke(123);
+
+	}
 }
