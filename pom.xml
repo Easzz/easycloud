@@ -21,6 +21,7 @@
         <module>corejava</module>
         <module>jms</module>
         <module>stock</module>
+        <module>fileImport</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
