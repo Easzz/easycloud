@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="utf-8"> 
+<title></title> 
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/1.4.0/jquery.js"></script>
+
+</head>
+<body>
+
+<h5>123</h5>
+
+<table class="table table-bordered" id='tabletest'>
+    <tr>
+        <th>项目</th>
+        <th>Win7</th>
+        <th>Win10</th>
+    </tr>
+
+	
+ </table>
+
+
+</body>
+<script>
+$(function(){
+    $.ajax({
+        url:'http://localhost:8020/project/getListByProjectId?projectId=1',
+        type:'get',
+        dataType:'json',
+        success:function(data){
+            //方法中传入的参数data为后台获取的数据
+            for(i in data.data) //data.data指的是数组，数组里是8个对象，i为数组的索引
+            {
+                var tr;
+                tr='<td>'+data.data[i].driveName+'</td>'+
+				'<td>'+
+					'<a href="'+data.data[i].win7SubList[0].url+'">版本:'+data.data[i].win7SubList[0].driveDate+'</a> </br>'+
+				'</td>'+
+				'<td>'+
+					'<a href="'+data.data[i].win10SubList[0].url+'">版本:'+data.data[i].win10SubList[0].driveDate+'</a> </br>'
+				'</td>';
+                $("#tabletest").append('<tr>'+tr+'</tr>')
+            }
+        }
+    })
+})
+	
+</script>
+</html>

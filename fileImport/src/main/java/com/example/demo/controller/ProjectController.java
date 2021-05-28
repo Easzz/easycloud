@@ -5,6 +5,7 @@ package com.example.demo.controller;
  */
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.demo.config.R;
 import com.example.demo.entity.Project;
 import com.example.demo.entity.ProjectItem;
 import com.example.demo.entity.ProjectItemSub;
@@ -30,25 +31,27 @@ public class ProjectController {
 	private ProjectMapper projectMapper;
 
 	@GetMapping("/save")
-	public void getFacilityList(Project project) {
+	public R save(Project project) {
 		project.insert();
+		return R.ok();
 	}
 
 	@GetMapping("/saveItem")
-	public void getFacilityList(ProjectItem projectItem) {
-
+	public R saveItem(ProjectItem projectItem) {
+		projectItem.insert();
+		return R.ok();
 	}
 
 	@GetMapping("/getProjectByName")
-	public List<Project> getFacilityList(String projectName) {
+	public R<List<Project>> getFacilityList(String projectName) {
 
-		return projectMapper.selectList(new QueryWrapper<Project>()
+		return new R<>(projectMapper.selectList(new QueryWrapper<Project>()
 				.like("project_name", projectName)
-		);
+		));
 	}
 
 	@GetMapping("/getListByProjectId")
-	public List<ProjectItem> getFacilityList(Long projectId) {
+	public R<List<ProjectItem>> getFacilityList(Long projectId) {
 		List<ProjectItemSub> projectItems = projectItemMapper.buildList(projectId);
 
 		List<ProjectItem> result = new ArrayList<>();
@@ -80,7 +83,7 @@ public class ProjectController {
 		}
 
 		System.out.println(result);
-		return result;
+		return new R<>(result);
 	}
 
 
