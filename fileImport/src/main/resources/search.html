@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Insert title here</title>
+  <style type="text/css">
+    #shuru {
+      width: 500px;
+      height: 35px;
+      border: 1px solid #c3c3c3;
+    }
+
+    #button {
+      width: 85px;
+      height: 37px;
+      border: 1px solid #c3c3c3;
+    }
+
+    #box {
+      width: 500px;
+      border: 1px solid #c3c3c3;
+      margin-left: -85px;
+      display: none;
+      text-align: left
+    }
+  </style>
+
+  <script type="text/javascript" src="https://cdn.bootcss.com/jquery/1.4.0/jquery.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      //0键盘抬起事件 通过div中的ID获取input输入框
+      $("#shuru").keyup(
+        function() {
+
+          $("#box").empty();
+          //1 获取输入框的值
+          var shuru = $(this).val().trim();
+          //alert(shuru);
+
+          //判断用户输入的是否为空,如果为空不发送ajax
+          if (shuru != null && shuru != "") {
+            //2 发送ajax
+            $.get("http://localhost:8020/project/getProjectByName", "projectName=" + shuru, function(
+              result) {
+              //alert(result);
+              if (result.data == null || result.data == "") {
+                $("#box").css("display", "none");
+              } else {
+                //遍历结果集
+                $.each(result.data, function(index, data) {
+
+                  //alert(index+""+data.message)
+                  //显示在隐藏div上面
+                  $("#box").append(
+                    "<div onclick='iptShow(this.id)' id="+data.id+"  name="+data.projectName+">" + data.projectName + "</div>");
+                  $("#box").css("display", "block");
+
+                });
+
+              }
+
+            }, "json");
+          } else {
+
+            $("#box").css("display", "none");
+          }
+
+        });
+    })
+  </script>
+
+</head>
+<body>
+<center>
+  <div>
+<!--    <img alt="" src="img/bd_logo1.png" width="310" height="110">-->
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div>
+      <input type="text" id="shuru" name="shuru">
+      <input
+      type="button" onclick="searchProject()" id="search" value="搜索">
+
+      <input type="hidden" id="projectId">
+      <div id="box"></div>
+
+    </div>
+
+  </div>
+
+</center>
+</body>
+<script>
+  function iptShow(id) {
+    console.log(   $("#"+id+"").attr("name"));
+    $("#shuru").val($("#"+id+"").attr("name"));
+
+    $("#projectId").val($("#"+id+"").attr("id"));
+    $("#box").css("display", "none");
+  }
+
+  function searchProject() {
+
+    var projectId=$("#projectId").val()
+    console.log(projectId );
+    window.location.href="index.html?projectId="+projectId;
+
+  }
+
+</script>
+</html>
