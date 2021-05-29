@@ -5,12 +5,16 @@ package com.example.demo.controller;
  */
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.config.R;
 import com.example.demo.entity.Project;
 import com.example.demo.entity.ProjectItem;
 import com.example.demo.entity.ProjectItemSub;
 import com.example.demo.mapper.ProjectItemMapper;
+import com.example.demo.mapper.ProjectItemSubMapper;
 import com.example.demo.mapper.ProjectMapper;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,18 +33,52 @@ public class ProjectController {
 	private ProjectItemMapper projectItemMapper;
 	@Autowired
 	private ProjectMapper projectMapper;
+	@Autowired
+	private ProjectItemSubMapper projectItemSubMapper;
 
 	@GetMapping("/save")
 	public R save(Project project) {
+
+
+		Integer count = projectMapper.selectCount(new QueryWrapper<Project>()
+				.eq("project_name", project.getProjectName())
+		);
+		if (count > 0) {
+			return R.failed("已存在重复记录");
+		}
+
 		project.insert();
 		return R.ok();
 	}
 
 	@GetMapping("/saveItem")
-	public R saveItem(ProjectItem projectItem) {
-		projectItem.insert();
+	public R saveItem(ProjectItemSub projectItemSub) {
+
+		//判断是否相同，相同则替换
+		List<ProjectItemSub> projectItemSubs = projectItemSub.selectList(new QueryWrapper<ProjectItemSub>()
+				.eq("project_id", projectItemSub.getProjectId())
+				.eq("drive_name", projectItemSub.getDriveName())
+				.eq("platform", projectItemSub.getPlatform()));
+
+		projectItemSub.insert();
+
 		return R.ok();
 	}
+
+	@GetMapping("/getProjectList")
+	public R<List<Project>> getProjectList(Integer page, Integer limit, String projectName) {
+
+		if (page == null || limit == null) {
+			page = 1;
+			limit = Integer.MAX_VALUE;
+		}
+
+		IPage<Project> projectIPage = projectMapper.selectPage(new Page<>(page, limit), new QueryWrapper<Project>()
+				.like(StringUtils.isNotBlank(projectName), "project_name", projectName)
+				.orderByDesc("id"));
+		return new R<>(projectIPage.getRecords());
+	}
+
 
 	@GetMapping("/getProjectByName")
 	public R<List<Project>> getFacilityList(String projectName) {
@@ -52,7 +90,12 @@ public class ProjectController {
 
 	@GetMapping("/getListByProjectId")
 	public R<List<ProjectItem>> getFacilityList(Long projectId) {
-		List<ProjectItemSub> projectItems = projectItemMapper.buildList(projectId);
+//		List<ProjectItemSub> projectItems = projectItemMapper.buildList(projectId);
+
+		List<ProjectItemSub> projectItems = projectItemSubMapper.selectList(new QueryWrapper<ProjectItemSub>()
+				.eq("project_id", projectId)
+		);
+
 
 		List<ProjectItem> result = new ArrayList<>();
 
