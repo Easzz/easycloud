@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>搜索项目</title>
+		<link rel="stylesheet" href="./css/layui.css" media="all">
+	</head>
+	<body>
+		<div id="formDemo" class="layui-form">
+			<!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+			<!-- <div class="layui-form-item">
+    <label class="layui-form-label">输入框</label>
+    <div class="layui-input-block">
+      <input type="text" name="" placeholder="请输入" autocomplete="off" class="layui-input">
+    </div>
+  </div> -->
+			<br>
+			<input type="hidden" id="projectId" />
+			<input type="hidden" id="projectName" />
+			<div class="layui-row">
+				<div class=" layui-col-md3">
+					<label class="layui-form-label">请输入项目</label>
+					<div class="layui-input-block">
+						<select id="project" lay-verify="" lay-search>
+							<!--  <option value="010">layer</option>
+       <option value="021">form</option>
+	   <option value="021">123</option> -->
+							<!-- <option value="0571" selected>layim</option> -->
+						</select>
+					</div>
+				</div>
+
+				<div class=" layui-col-md3">
+					<div class="layui-input-block">
+						<!-- <button id="btn" class="layui-btn" lay-submit lay-filter="*">立即提交</button> -->
+						<button id="btn" class="layui-btn" lay-submit lay-filter="*">搜索</button>
+						<!-- <button type="reset" class="layui-btn layui-btn-primary">重置</button> -->
+					</div>
+				</div>
+			</div>
+			<!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+		</div>
+		<script src="./js/layui.js"></script>
+		<script src="./js/layer.js"></script>
+		<script src="./js/jquery-3.5.1.min.js"></script>
+		<script>
+		    
+			      
+				  
+				  
+			layui.use('form', function() {
+				var form = layui.form;
+
+				//各种基于事件的操作，下面会有进一步介绍
+
+
+				$(function() {
+					$.ajax({
+						url: 'http://localhost:8020/project/getProjectList',
+						type: 'get',
+						dataType: 'json',
+						success: function(res) {
+							//方法中传入的参数data为后台获取的数据
+							var role = document.getElementById("project");
+							var data = res.data;
+							for (var i = 0; i < data.length; i++) {
+
+								var id = data[i].id;
+								var value = data[i].projectName;
+								//   alert(value+label);
+
+								var option = document.createElement("option"); // 创建添加option属性
+								option.setAttribute("value", id); // 给option的value添加值
+
+								option.setAttribute("data-id", id);
+								option.innerText = value; // 打印option对应的纯文本 
+								role.appendChild(option); //给select添加option子标签
+
+							}
+							form.render("select");
+
+
+						}
+					})
+				})
+
+
+
+				form.on("select", function(data) {
+					console.log(data.value); // 获取选中的值
+					var projectId = data.value;
+					$("#projectId").val(projectId);
+					
+
+				});
+
+				$("#btn").on('click', function() {
+					
+					
+					var projectId = $("#projectId").val();
+					console.log(projectId)
+					if(projectId==''){
+						alert("请选择项目");
+						return;
+					}
+					
+					  var a=$("#project option:selected").text();//获取文本
+					window.location.href="detail.html?projectId="+projectId+"&projectName="+a;
+					
+				});
+
+
+
+			});
+		</script>
+	</body>
+</html>
