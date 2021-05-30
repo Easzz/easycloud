@@ -35,6 +35,15 @@ public class ProjectController {
 	private ProjectMapper projectMapper;
 	@Autowired
 	private ProjectItemSubMapper projectItemSubMapper;
+	@Autowired
+	private FileUploadConfig fileUploadConfig;
+
+
+	@GetMapping("/getApi")
+	public R getApi() {
+	System.out.println(fileUploadConfig);
+		return R.ok(fileUploadConfig);
+	}
 
 	@GetMapping("/save")
 	public R save(Project project) {
@@ -55,9 +64,10 @@ public class ProjectController {
 	public R saveItem(ProjectItemSub projectItemSub) {
 
 		//判断是否相同，相同则替换
-		List<ProjectItemSub> projectItemSubs = projectItemSub.selectList(new QueryWrapper<ProjectItemSub>()
+		ProjectItemSub projectItemSubs = projectItemSub.selectOne(new QueryWrapper<ProjectItemSub>()
 				.eq("project_id", projectItemSub.getProjectId())
 				.eq("drive_name", projectItemSub.getDriveName())
+
 				.eq("platform", projectItemSub.getPlatform()));
 
 		projectItemSub.insert();
