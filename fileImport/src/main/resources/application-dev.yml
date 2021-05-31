@@ -10,9 +10,8 @@ spring:
 
 # 指定文件上传路径
 fileupload:
-#    uploadPath: D:\\mx\\upload
-  uploadPath: /home/monkey/upload
+  uploadPath: D:\\upload
+#  uploadPath: /home/monkey/upload
 #  uploadPath: /root/upload
-  apiUrl: http://localhost/
-  fileServerUrl: http://localhost:8888/
+
 

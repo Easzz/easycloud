@@ -10,7 +10,7 @@
 			  value="%-12(%d{yyyy-MM-dd HH:mm:ss.SSS}) %-5level ${PID} --- [%thread] %c [%L] -||- %msg%n"/>
 
 	<!-- prod文件路径 -->
-	<property name="PROD_FILE_PATH" value="/logs/anxunPro/anxun-wap"/>
+	<property name="PROD_FILE_PATH" value="D:/app/logs/"/>
 
 	<!--输出到控制台-->
 	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
