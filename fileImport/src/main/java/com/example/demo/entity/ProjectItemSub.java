@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -26,11 +28,20 @@ public class ProjectItemSub extends Model<ProjectItemSub> {
 	private String driveName;
 	private String platform;
 
+	/**
+	 * 芯片类型
+	 */
+	private String manufacturer;
+
 	private String version;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern="yyyy/MM/dd",timezone="GMT+8")
 	private Date driveDate;
 	private String url;
+	private String description;
+
+	@TableField(value = "gmt_create", fill = FieldFill.INSERT)
+	private Date gmtCreate;
 
 
 }

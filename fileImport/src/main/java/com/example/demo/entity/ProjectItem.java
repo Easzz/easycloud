@@ -23,12 +23,17 @@ public class ProjectItem extends Model<ProjectItem> {
 	 */
 	@TableId
 	private Long id;
+
 	@ApiModelProperty(value = "设备id")
 	private Long projectId;
 
 	private String driveName;
 
 	private String platform;
+
+	private String manufacturer;
+
+	private String description;
 
 	@TableField(exist = false)
 	private List<ProjectItemSub> win7SubList;

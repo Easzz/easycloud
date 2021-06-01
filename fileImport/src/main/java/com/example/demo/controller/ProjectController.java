@@ -20,9 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -41,7 +39,7 @@ public class ProjectController {
 
 	@GetMapping("/getApi")
 	public R getApi() {
-	System.out.println(fileUploadConfig);
+		System.out.println(fileUploadConfig);
 		return R.ok(fileUploadConfig);
 	}
 
@@ -64,14 +62,19 @@ public class ProjectController {
 	public R saveItem(ProjectItemSub projectItemSub) {
 
 		//判断是否相同，相同则替换
-		ProjectItemSub projectItemSubs = projectItemSub.selectOne(new QueryWrapper<ProjectItemSub>()
+		ProjectItemSub dbItem = projectItemSub.selectOne(new QueryWrapper<ProjectItemSub>()
 				.eq("project_id", projectItemSub.getProjectId())
 				.eq("drive_name", projectItemSub.getDriveName())
-
+				.eq("manufacturer", projectItemSub.getManufacturer())
 				.eq("platform", projectItemSub.getPlatform()));
 
-		projectItemSub.insert();
+		if (dbItem != null) {
+			projectItemSub.setId(dbItem.getId());
+			projectItemSubMapper.updateById(projectItemSub);
+			return R.ok();
+		}
 
+		projectItemSub.insert();
 		return R.ok();
 	}
 
@@ -98,6 +101,19 @@ public class ProjectController {
 		));
 	}
 
+
+	/**
+	 * map 按 key 升序排序
+	 */
+	private static Map<String,  List<ProjectItemSub>> sortByKey(Map<String,  List<ProjectItemSub>> map) {
+		Map<String,  List<ProjectItemSub>> result = new LinkedHashMap<>(map.size());
+		map.entrySet().stream()
+				.sorted(Map.Entry.comparingByKey())
+				.forEachOrdered(e -> result.put(e.getKey(), e.getValue()));
+		return result;
+	}
+
+
 	@GetMapping("/getListByProjectId")
 	public R<List<ProjectItem>> getFacilityList(Long projectId) {
 //		List<ProjectItemSub> projectItems = projectItemMapper.buildList(projectId);
@@ -110,32 +126,58 @@ public class ProjectController {
 		List<ProjectItem> result = new ArrayList<>();
 
 		//首先根据设备分组
-		Map<String, List<ProjectItemSub>> collect = projectItems.stream().collect(Collectors.groupingBy(ProjectItemSub::getDriveName, Collectors.toList()));
+		Map<String, List<ProjectItemSub>> driveMap = projectItems.stream().collect(Collectors.groupingBy(ProjectItemSub::getDriveName, Collectors.toList()));
 
-		//根据平台分组
+		Map<String, List<ProjectItemSub>> driveMapSort = sortByKey(driveMap);
 
-		for (String s : collect.keySet()) {
-			ProjectItem item = new ProjectItem();
-			item.setDriveName(s);
 
-			List<ProjectItemSub> projectItemSubs = collect.get(s);
-			Map<String, List<ProjectItemSub>> collect1 = projectItemSubs.stream().collect(Collectors.groupingBy(ProjectItemSub::getPlatform, Collectors.toList()));
+		for (String s : driveMapSort.keySet()) {
 
-			//根据平台分组
-			for (String s1 : collect1.keySet()) {
-				List<ProjectItemSub> projectItemSubs1 = collect1.get(s1);
-				if (s1.equalsIgnoreCase("win7")) {
-					item.setWin7SubList(projectItemSubs1);
+			List<ProjectItemSub> projectItemSubs = driveMapSort.get(s);
+			Map<String, List<ProjectItemSub>> manufacturerMap = projectItemSubs.stream().collect(Collectors.groupingBy(ProjectItemSub::getManufacturer, Collectors.toList()));
+
+
+
+			//根据厂商分组
+			for (String manufacturerKey : manufacturerMap.keySet()) {
+				ProjectItem item = new ProjectItem();
+				item.setDriveName(s);
+
+				item.setManufacturer(manufacturerKey);
+
+				List<ProjectItemSub> projectItemSubs1 = manufacturerMap.get(manufacturerKey);
+
+				String description = projectItemSubs1.get(0).getDescription();
+				if (StringUtils.isBlank(description)){
+					item.setDescription("-");
+				}else {
+					item.setDescription(description);
 				}
-				if (s1.equalsIgnoreCase("win10")) {
-					item.setWin10SubList(projectItemSubs1);
+
+
+				//根据平台分组
+
+				Map<String, List<ProjectItemSub>> platformMap = projectItemSubs1.stream().collect(Collectors.groupingBy(ProjectItemSub::getPlatform, Collectors.toList()));
+
+				for (String platformKey : platformMap.keySet()) {
+
+
+					if (platformKey.equalsIgnoreCase("win7")) {
+						item.setWin7SubList(projectItemSubs1);
+					}
+					if (platformKey.equalsIgnoreCase("win10")) {
+						item.setWin10SubList(projectItemSubs1);
+					}
+
 				}
+				result.add(item);
+
 			}
 
-			result.add(item);
+
 		}
 
-		System.out.println(result);
+//		System.out.println(result);
 		return new R<>(result);
 	}
 
