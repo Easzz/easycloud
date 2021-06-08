@@ -136,8 +136,6 @@ public class ProjectController {
 			List<ProjectItemSub> projectItemSubs = driveMapSort.get(s);
 			Map<String, List<ProjectItemSub>> manufacturerMap = projectItemSubs.stream().collect(Collectors.groupingBy(ProjectItemSub::getManufacturer, Collectors.toList()));
 
-
-
 			//根据厂商分组
 			for (String manufacturerKey : manufacturerMap.keySet()) {
 				ProjectItem item = new ProjectItem();
@@ -154,19 +152,19 @@ public class ProjectController {
 					item.setDescription(description);
 				}
 
-
 				//根据平台分组
 
 				Map<String, List<ProjectItemSub>> platformMap = projectItemSubs1.stream().collect(Collectors.groupingBy(ProjectItemSub::getPlatform, Collectors.toList()));
 
 				for (String platformKey : platformMap.keySet()) {
 
+					List<ProjectItemSub> sub = platformMap.get(platformKey);
 
 					if (platformKey.equalsIgnoreCase("win7")) {
-						item.setWin7SubList(projectItemSubs1);
+						item.setWin7SubList(sub);
 					}
 					if (platformKey.equalsIgnoreCase("win10")) {
-						item.setWin10SubList(projectItemSubs1);
+						item.setWin10SubList(sub);
 					}
 
 				}
