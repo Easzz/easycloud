@@ -22,6 +22,7 @@
         <module>jms</module>
         <module>stock</module>
         <module>fileImport</module>
+        <module>deviceManage</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
