@@ -1,4 +1,4 @@
-package com.example.deviceManage.controller;
+package com.example.drive.controller;
 
 import com.example.deviceManage.entity.AttachmentMediaEnum;
 import lombok.extern.slf4j.Slf4j;

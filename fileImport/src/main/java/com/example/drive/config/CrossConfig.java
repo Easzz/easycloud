@@ -1,4 +1,4 @@
-package com.example.deviceManage.config;
+package com.example.drive.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.example.deviceManage.entity;
+package com.example.drive.entity;
 
 /**
  * Created by shenxuan on 2018/12/5 17:11

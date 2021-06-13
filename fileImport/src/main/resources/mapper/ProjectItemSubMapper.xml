@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.deviceManage.mapper.ProjectItemSubMapper">
+<mapper namespace="com.example.drive.mapper.ProjectItemSubMapper">
 
 
 
-	<resultMap id="subMap" type="com.example.deviceManage.entity.ProjectItemSub" >
+	<resultMap id="subMap" type="com.example.drive.entity.ProjectItemSub" >
 		<result property="version" column="version"/>
 		<result property="driveDate" column="drive_date"/>
 		<result property="url" column="url"/>

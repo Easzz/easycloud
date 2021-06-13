@@ -1,4 +1,4 @@
-/*
+package com.example.drive.config;/*
  *
  *      Copyright (c) 2018-2025, lengleng All rights reserved.
  *
@@ -17,7 +17,6 @@
  *
  */
 
-package com.example.deviceManage.config;
 
 /**
  * @author lengleng

@@ -3,9 +3,9 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${MYSQL-USER:root}
-    password: ${MYSQL-PWD:123456}
+    password: ${MYSQL-PWD:EzoG8lFig1LZgOA4}
 #    password: ${MYSQL-PWD:HANwl.83!}
-    url: jdbc:mysql://${MYSQL-HOST:localhost}:${MYSQL-PORT:3306}/${MYSQL-DB:drive}?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8
+    url: jdbc:mysql://${MYSQL-HOST:129.204.3.98}:${MYSQL-PORT:3306}/${MYSQL-DB:device}?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8
 #    url: jdbc:mysql://${MYSQL-HOST:192.168.10.51}:${MYSQL-PORT:3306}/${MYSQL-DB:iotplatform}?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8
 
 # 指定文件上传路径

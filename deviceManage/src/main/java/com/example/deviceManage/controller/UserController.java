@@ -12,6 +12,7 @@ import com.example.deviceManage.mapper.DeviceMapper;
 import com.example.deviceManage.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,14 +25,13 @@ public class UserController {
 
     @GetMapping("/login")
     public R login(User user) {
-
 		User one = userMapper.selectOne(new QueryWrapper<User>()
 				.eq("username", user.getUsername())
 				.eq("pwd", user.getPwd())
 				.eq("valid", 1)
 		);
 		if (one!=null){
-			R.ok(one);
+			return R.ok(one);
 		}
 
 		return R.failed();

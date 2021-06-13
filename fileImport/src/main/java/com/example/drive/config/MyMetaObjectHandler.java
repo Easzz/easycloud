@@ -1,4 +1,4 @@
-package com.example.deviceManage.config;
+package com.example.drive.config;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;

@@ -17,8 +17,9 @@
  *
  */
 
-package com.example.deviceManage.config;
+package com.example.drive.config;
 
+import com.example.drive.config.CommonConstants;
 import lombok.*;
 import lombok.experimental.Accessors;
 

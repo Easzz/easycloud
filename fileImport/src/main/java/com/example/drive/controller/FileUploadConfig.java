@@ -1,4 +1,4 @@
-package com.example.deviceManage.controller;
+package com.example.drive.controller;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
