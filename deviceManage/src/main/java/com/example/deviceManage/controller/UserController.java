@@ -5,11 +5,15 @@ package com.example.deviceManage.controller;
  */
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.deviceManage.config.R;
 import com.example.deviceManage.entity.Device;
+import com.example.deviceManage.entity.DeviceType;
 import com.example.deviceManage.entity.User;
 import com.example.deviceManage.mapper.DeviceMapper;
 import com.example.deviceManage.mapper.UserMapper;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,10 +42,19 @@ public class UserController {
     }
 
 
-	@GetMapping("/save")
+
+	@GetMapping("/list")
+	public R<IPage<User>> list(Integer page, Integer limit, User user) {
+		IPage list = userMapper.selectPage(new Page<>(page,limit), new QueryWrapper<User>()
+				.like(StringUtils.isNotBlank(user.getUsername()), "username", user.getUsername())
+		);
+
+		return R.ok(list);
+	}
+
+
+	@PostMapping("/save")
 	public R save(User user) {
-
-
 		Integer count = userMapper.selectCount(new QueryWrapper<User>()
 				.eq("username", user.getUsername())
 		);

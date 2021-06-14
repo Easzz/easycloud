@@ -25,9 +25,22 @@ public class Device extends Model<Device> {
 	private String deviceName;
 	private Long typeId;
 	private Long userId;
+	// 在库，归属人
+	@TableField(exist = false)
+	private String belong;
+
+	//0 ->管理员  1->用户
+	@TableField(exist = false)
+	private Integer roleId;
+
+
 	private String damage;
-	private Integer auditStatus;
+	/**
+	 * 0->在库。1->借出审核中。2->已借出。3->归还审核中
+	 */
+	private String auditStatus;
 	private Integer valid;
+	private String typeName;
 
 
 //	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")

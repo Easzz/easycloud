@@ -9,8 +9,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.deviceManage.config.R;
 import com.example.deviceManage.entity.Device;
-import com.example.deviceManage.entity.User;
+import com.example.deviceManage.entity.DeviceType;
 import com.example.deviceManage.mapper.DeviceMapper;
+import com.example.deviceManage.mapper.DeviceTypeMapper;
+import com.example.deviceManage.service.DeviceTypeService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,49 +20,41 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
 @RestController
-@RequestMapping("/device")
-public class DeviceController {
+@RequestMapping("/type")
+public class DeviceTypeController {
 
-    @Autowired
-    private DeviceMapper deviceMapper;
+	@Autowired
+	private DeviceTypeService deviceTypeService;
 
+	@GetMapping("/list")
+	public R<IPage<DeviceType>> list(Integer page,Integer limit,DeviceType deviceType) {
+		if (page==null||limit==null){
+			page=1;
+			limit=Integer.MAX_VALUE;
+		}
 
-    @GetMapping("/list")
-    public R<IPage<Device>> list(Integer page, Integer limit, Device device) {
+		IPage list = deviceTypeService.page(new Page<>(page,limit), new QueryWrapper<DeviceType>()
+				.like(StringUtils.isNotBlank(deviceType.getTypeName()), "type_name", deviceType.getTypeName())
+		);
 
-
-        IPage<Device> list = deviceMapper.selectPageVo(new Page<>(page, limit), new QueryWrapper<Device>()
-                .like(StringUtils.isNotBlank(device.getDeviceName()), "device_name", device.getDeviceName())
-                .eq(device.getRoleId() != null && device.getRoleId() == 1, "user_id", device.getUserId())
-        );
-
-        List<Device> records = list.getRecords();
-        for (Device record : records) {
-            if (record.getUserId() == null) {
-                record.setBelong("在库");
-            }
-        }
-        return R.ok(list);
-    }
+		return R.ok(list);
+	}
 
 
-    @PostMapping("/save")
-    public R save(Device device) {
+	@PostMapping("/save")
+	public R save(DeviceType deviceType) {
+		Integer count = deviceTypeService.count(new QueryWrapper<DeviceType>()
+				.eq("type_name", deviceType.getTypeName())
+		);
+		if (count > 0) {
+			return R.failed("已存在重复记录");
+		}
 
-        Integer count = deviceMapper.selectCount(new QueryWrapper<Device>()
-                .eq("device_name", device.getDeviceName())
-        );
-        if (count > 0) {
-            return R.failed("已存在重复记录");
-        }
+		deviceType.insert();
+		return R.ok();
+	}
 
-        device.insert();
-        return R.ok();
-    }
 
 //
 //	@GetMapping("/getProjectList")
