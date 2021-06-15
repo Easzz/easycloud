@@ -23,101 +23,108 @@ import java.util.List;
 @RequestMapping("/device")
 public class DeviceController {
 
-	@Autowired
-	private DeviceService deviceService;
+    @Autowired
+    private DeviceService deviceService;
 
 
-	@GetMapping("/list")
+    @GetMapping("/list")
 
-	public R<IPage<Device>> list(Integer page, Integer limit, Device device) {
+    public R<IPage<Device>> list(Integer page, Integer limit, Device device, Integer queryType) {
+        //queryTpe ==1 查询在库的设备(允许借出的设备)
+        //queryType==2 查询当前用户已经借出的设备
 
+        IPage<Device> list = deviceService.selectPageVo(new Page<>(page, limit), new QueryWrapper<Device>()
+                .like(StringUtils.isNotBlank(device.getDeviceName()), "device_name", device.getDeviceName())
+                .eq(device.getRoleId() != null && device.getRoleId() == 1, "user_id", device.getUserId())
+                .eq(queryType != null && queryType == 2, "audit_status", "已借出")
+                .isNull(queryType != null && queryType == 1, "user_id")
+                .and(queryType != null && queryType == 3, e -> {
+                    e.eq("audit_status", "借出审核中")
+                            .or()
+                            .eq("audit_status", "归还审核中");
+                })
+        );
 
-		IPage<Device> list = deviceService.selectPageVo(new Page<>(page, limit), new QueryWrapper<Device>()
-				.like(StringUtils.isNotBlank(device.getDeviceName()), "device_name", device.getDeviceName())
-				.eq(device.getRoleId() != null && device.getRoleId() == 1, "user_id", device.getUserId())
-		);
-
-		List<Device> records = list.getRecords();
-		for (Device record : records) {
-			if (record.getUserId() == null) {
-				record.setBelong("在库");
-			}
-		}
-		return R.ok(list);
-	}
-
-
-	@PostMapping("/save")
-	public R save(Device device) {
-
-		Integer count = deviceService.count(new QueryWrapper<Device>()
-				.eq("device_name", device.getDeviceName())
-		);
-		if (count > 0) {
-			return R.failed("已存在重复记录");
-		}
-
-		device.insert();
-		return R.ok();
-	}
+        List<Device> records = list.getRecords();
+        for (Device record : records) {
+            if (record.getUserId() == null) {
+                record.setBelong("在库");
+            }
+        }
+        return R.ok(list);
+    }
 
 
-	@PostMapping("/out")
-	public R out(Device device) {
-		//userId
+    @PostMapping("/save")
+    public R save(Device device) {
 
-		device.setAuditStatus("借出审核中");
-		deviceService.updateById(device);
-		return R.ok();
-	}
+        Integer count = deviceService.count(new QueryWrapper<Device>()
+                .eq("device_name", device.getDeviceName())
+        );
+        if (count > 0) {
+            return R.failed("已存在重复记录");
+        }
 
-	@PostMapping("/outAudit")
-	public R outAudit(Device device, Integer agree) {
-		if (agree == 1) {
-			//同意
-
-			device.setAuditStatus("已借出");
-			deviceService.updateById(device);
-		} else {
-			//还原用户
-			device.setUserId(null);
-			deviceService.lambdaUpdate()
-					.set(Device::getUserId, null)
-					.set(Device::getAuditStatus,"在库")
-					.update();
-		}
-
-		return R.ok();
-	}
+        device.insert();
+        return R.ok();
+    }
 
 
-	@PostMapping("/in")
-	public R in(Device device) {
-		//userId
-		device.setAuditStatus("归还审核中");
-		deviceService.updateById(device);
-		return R.ok();
-	}
+    @PostMapping("/out")
+    public R out(Device device) {
+        //userId
 
-	@PostMapping("/inAudit")
-	public R in(Device device, Integer agree) {
-		if (agree == 1) {
-			//同意
+        device.setAuditStatus("借出审核中");
+        deviceService.updateById(device);
+        return R.ok();
+    }
 
-			device.setAuditStatus("在库");
-			deviceService.updateById(device);
-		} else {
-			//还原用户
+    @PostMapping("/outAudit")
+    public R outAudit(Device device, Integer agree) {
+        if (agree == 1) {
+            //同意
+
+            device.setAuditStatus("已借出");
+            deviceService.updateById(device);
+        } else {
+            //还原用户
+            device.setUserId(null);
+            deviceService.lambdaUpdate()
+                    .set(Device::getUserId, null)
+                    .set(Device::getAuditStatus, "在库")
+                    .update();
+        }
+
+        return R.ok();
+    }
+
+
+    @PostMapping("/in")
+    public R in(Device device) {
+        //userId
+        device.setAuditStatus("归还审核中");
+        deviceService.updateById(device);
+        return R.ok();
+    }
+
+    @PostMapping("/inAudit")
+    public R in(Device device, Integer agree) {
+        if (agree == 1) {
+            //同意
+
+            device.setAuditStatus("在库");
+            deviceService.updateById(device);
+        } else {
+            //还原用户
 //			device.setUserId(null);
 //			deviceService.lambdaUpdate()
 //					.set(Device::getUserId, null)
 //					.set(Device::getAuditStatus,"在库")
 //					.update();
-		}
+        }
 
-		return R.ok();
-	}
-
+        return R.ok();
+    }
 
 
 //
