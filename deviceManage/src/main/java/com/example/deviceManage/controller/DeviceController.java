@@ -9,8 +9,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.deviceManage.config.R;
 import com.example.deviceManage.entity.Device;
-import com.example.deviceManage.entity.User;
-import com.example.deviceManage.mapper.DeviceMapper;
+import com.example.deviceManage.service.DeviceService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,51 +17,111 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @RestController
 @RequestMapping("/device")
 public class DeviceController {
 
-    @Autowired
-    private DeviceMapper deviceMapper;
+	@Autowired
+	private DeviceService deviceService;
 
 
-    @GetMapping("/list")
-    public R<IPage<Device>> list(Integer page, Integer limit, Device device) {
+	@GetMapping("/list")
+
+	public R<IPage<Device>> list(Integer page, Integer limit, Device device) {
 
 
-        IPage<Device> list = deviceMapper.selectPageVo(new Page<>(page, limit), new QueryWrapper<Device>()
-                .like(StringUtils.isNotBlank(device.getDeviceName()), "device_name", device.getDeviceName())
-                .eq(device.getRoleId() != null && device.getRoleId() == 1, "user_id", device.getUserId())
-        );
+		IPage<Device> list = deviceService.selectPageVo(new Page<>(page, limit), new QueryWrapper<Device>()
+				.like(StringUtils.isNotBlank(device.getDeviceName()), "device_name", device.getDeviceName())
+				.eq(device.getRoleId() != null && device.getRoleId() == 1, "user_id", device.getUserId())
+		);
 
-        List<Device> records = list.getRecords();
-        for (Device record : records) {
-            if (record.getUserId() == null) {
-                record.setBelong("在库");
-            }
-        }
-        return R.ok(list);
-    }
+		List<Device> records = list.getRecords();
+		for (Device record : records) {
+			if (record.getUserId() == null) {
+				record.setBelong("在库");
+			}
+		}
+		return R.ok(list);
+	}
 
 
-    @PostMapping("/save")
-    public R save(Device device) {
+	@PostMapping("/save")
+	public R save(Device device) {
 
-        Integer count = deviceMapper.selectCount(new QueryWrapper<Device>()
-                .eq("device_name", device.getDeviceName())
-        );
-        if (count > 0) {
-            return R.failed("已存在重复记录");
-        }
+		Integer count = deviceService.count(new QueryWrapper<Device>()
+				.eq("device_name", device.getDeviceName())
+		);
+		if (count > 0) {
+			return R.failed("已存在重复记录");
+		}
 
-        device.insert();
-        return R.ok();
-    }
+		device.insert();
+		return R.ok();
+	}
+
+
+	@PostMapping("/out")
+	public R out(Device device) {
+		//userId
+
+		device.setAuditStatus("借出审核中");
+		deviceService.updateById(device);
+		return R.ok();
+	}
+
+	@PostMapping("/outAudit")
+	public R outAudit(Device device, Integer agree) {
+		if (agree == 1) {
+			//同意
+
+			device.setAuditStatus("已借出");
+			deviceService.updateById(device);
+		} else {
+			//还原用户
+			device.setUserId(null);
+			deviceService.lambdaUpdate()
+					.set(Device::getUserId, null)
+					.set(Device::getAuditStatus,"在库")
+					.update();
+		}
+
+		return R.ok();
+	}
+
+
+	@PostMapping("/in")
+	public R in(Device device) {
+		//userId
+		device.setAuditStatus("归还审核中");
+		deviceService.updateById(device);
+		return R.ok();
+	}
+
+	@PostMapping("/inAudit")
+	public R in(Device device, Integer agree) {
+		if (agree == 1) {
+			//同意
+
+			device.setAuditStatus("在库");
+			deviceService.updateById(device);
+		} else {
+			//还原用户
+//			device.setUserId(null);
+//			deviceService.lambdaUpdate()
+//					.set(Device::getUserId, null)
+//					.set(Device::getAuditStatus,"在库")
+//					.update();
+		}
+
+		return R.ok();
+	}
+
+
 
 //
+
 //	@GetMapping("/getProjectList")
 //	public R<List<Project>> getProjectList(Integer page, Integer limit, String projectName) {
 //
