@@ -4,4 +4,9 @@
 
 <mapper namespace="com.example.deviceManage.mapper.DeviceRecordMapper">
 
+    <select id="selectPageVo" resultType="com.example.deviceManage.entity.DeviceRecord">
+        select r.*,d.device_name,d.device_number,u.real_name from device_record r left join  device d on r.device_id=d.id
+        left join user u on u.id=r.user_id
+         ${ew.customSqlSegment}
+    </select>
 </mapper>

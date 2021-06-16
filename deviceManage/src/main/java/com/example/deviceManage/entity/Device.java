@@ -36,6 +36,7 @@ public class Device extends Model<Device> {
 	@TableField(exist = false)
 	private Integer roleId;
 
+	private String deviceNumber;
 
 	private String damage;
 	/**
@@ -51,6 +52,6 @@ public class Device extends Model<Device> {
 	private Date gmtCreate;
 
 
-	@TableField(value = "gmt_modified", fill = FieldFill.INSERT)
+	@TableField(value = "gmt_modified", fill = FieldFill.UPDATE)
 	private Date gmtModified;
 }

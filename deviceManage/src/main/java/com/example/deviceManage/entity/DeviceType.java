@@ -29,6 +29,6 @@ public class DeviceType extends Model<DeviceType> {
 	private Date gmtCreate;
 
 
-	@TableField(value = "gmt_modified", fill = FieldFill.INSERT)
+	@TableField(value = "gmt_modified", fill = FieldFill.UPDATE)
 	private Date gmtModified;
 }

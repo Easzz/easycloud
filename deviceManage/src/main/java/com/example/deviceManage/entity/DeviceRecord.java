@@ -21,14 +21,28 @@ public class DeviceRecord extends Model<DeviceRecord> {
 	@TableId
 	private Long id;
 	private Long deviceId;
+	@TableField(exist = false)
 	private String deviceName;
+	@TableField(exist = false)
+	private String realName;
 
+	@TableField(exist = false)
+	private String deviceNumber;
+
+
+
+	private Long userId;
+	// 0->借出，1->归还、已审核
+	private String type;
+
+	//0 未审核，1-同意  2->拒绝
+	private Integer agree;
 
 //	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	@TableField(value = "gmt_create", fill = FieldFill.INSERT)
 	private Date gmtCreate;
 
 
-	@TableField(value = "gmt_modified", fill = FieldFill.INSERT)
+	@TableField(value = "gmt_modified", fill = FieldFill.UPDATE)
 	private Date gmtModified;
 }
