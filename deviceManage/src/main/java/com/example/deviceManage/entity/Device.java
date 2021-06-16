@@ -25,6 +25,9 @@ public class Device extends Model<Device> {
 	private String deviceName;
 	private Long typeId;
 	private Long userId;
+
+
+
 	// 在库，归属人
 	@TableField(exist = false)
 	private String belong;

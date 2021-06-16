@@ -66,7 +66,7 @@ public class UserController {
 		return R.ok();
 	}
 
-	@GetMapping("/update")
+	@PostMapping("/update")
 	public R update(User user) {
 
 		user.updateById();

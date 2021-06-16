@@ -26,6 +26,8 @@ public class User extends Model<User> {
 
 	private Integer valid;
 
+	private String realName;
+
 
 //	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	@TableField(value = "gmt_create", fill = FieldFill.INSERT)

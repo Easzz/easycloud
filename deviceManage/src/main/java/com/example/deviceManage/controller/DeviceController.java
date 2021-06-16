@@ -31,12 +31,17 @@ public class DeviceController {
 
     public R<IPage<Device>> list(Integer page, Integer limit, Device device, Integer queryType) {
         //queryTpe ==1 查询在库的设备(允许借出的设备)
-        //queryType==2 查询当前用户已经借出的设备
+        //queryType==2 查询当前用户已经借出的设备、归还审核中的
 
         IPage<Device> list = deviceService.selectPageVo(new Page<>(page, limit), new QueryWrapper<Device>()
                 .like(StringUtils.isNotBlank(device.getDeviceName()), "device_name", device.getDeviceName())
                 .eq(device.getRoleId() != null && device.getRoleId() == 1, "user_id", device.getUserId())
-                .eq(queryType != null && queryType == 2, "audit_status", "已借出")
+                .and(queryType != null && queryType == 2, e -> {
+                    e.eq("audit_status", "已借出")
+                            .or()
+                            .eq("audit_status","借出审核中")
+                            .or().eq("audit_status", "归还审核中");
+                })
                 .isNull(queryType != null && queryType == 1, "user_id")
                 .and(queryType != null && queryType == 3, e -> {
                     e.eq("audit_status", "借出审核中")
@@ -114,6 +119,12 @@ public class DeviceController {
 
             device.setAuditStatus("在库");
             deviceService.updateById(device);
+
+            device.setUserId(null);
+            deviceService.lambdaUpdate()
+                    .set(Device::getUserId, null)
+                    .set(Device::getAuditStatus, "在库")
+                    .update();
         } else {
             //还原用户
 //			device.setUserId(null);
