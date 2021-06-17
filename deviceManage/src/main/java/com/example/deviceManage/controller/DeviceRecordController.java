@@ -19,20 +19,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/deviceRecord")
 public class DeviceRecordController {
 
-    @Autowired
-    private DeviceRecordService deviceRecordService;
+	@Autowired
+	private DeviceRecordService deviceRecordService;
 
-    @GetMapping("/list")
-    public R<IPage<DeviceRecord>> list(Integer page, Integer limit,Integer agree,String type) {
+	@GetMapping("/list")
+	public R<IPage<DeviceRecord>> list(Integer page, Integer limit, Integer agree, String type, Long userId, Integer showType) {
+		//showType=1 已借出 || 归还审核中
 
-        IPage<DeviceRecord> list = deviceRecordService.selectPageVo(new Page<>(page, limit), new QueryWrapper<DeviceRecord>()
-                .eq(agree!=null,"r.agree",agree)
-                .eq(type!=null,"type",type)
-                .orderByAsc("d.type_name")
-        );
+		IPage<DeviceRecord> list = deviceRecordService.selectPageVo(new Page<>(page, limit), new QueryWrapper<DeviceRecord>()
+				.eq(agree != null, "r.agree", agree)
+				.eq(type != null, "type", type)
+				.and(showType != null && showType == 1, e -> e.eq("type", "已借出")
+						.or()
+						.eq("type", "归还审核中"))
+				.eq(userId!=null,"r.user_id", userId)
+				.orderByAsc("d.type_name")
+		);
 
-        return R.ok(list);
-    }
+		return R.ok(list);
+	}
 
 
 }
