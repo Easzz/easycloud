@@ -28,6 +28,10 @@ public class DeviceRecord extends Model<DeviceRecord> {
 
 	@TableField(exist = false)
 	private String deviceNumber;
+	@TableField(exist = false)
+	private String typeName;
+	@TableField(exist = false)
+	private String damage;
 
 
 

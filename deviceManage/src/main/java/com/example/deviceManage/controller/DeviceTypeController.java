@@ -8,10 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.deviceManage.config.R;
-import com.example.deviceManage.entity.Device;
 import com.example.deviceManage.entity.DeviceType;
-import com.example.deviceManage.mapper.DeviceMapper;
-import com.example.deviceManage.mapper.DeviceTypeMapper;
 import com.example.deviceManage.service.DeviceTypeService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +33,7 @@ public class DeviceTypeController {
 
 		IPage list = deviceTypeService.page(new Page<>(page,limit), new QueryWrapper<DeviceType>()
 				.like(StringUtils.isNotBlank(deviceType.getTypeName()), "type_name", deviceType.getTypeName())
+				.orderByDesc("type_name")
 		);
 
 		return R.ok(list);

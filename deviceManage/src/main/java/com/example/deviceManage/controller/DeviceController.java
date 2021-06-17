@@ -12,8 +12,6 @@ import com.example.deviceManage.config.R;
 import com.example.deviceManage.entity.AuditVo;
 import com.example.deviceManage.entity.Device;
 import com.example.deviceManage.entity.DeviceRecord;
-import com.example.deviceManage.entity.DeviceType;
-import com.example.deviceManage.mapper.DeviceRecordMapper;
 import com.example.deviceManage.service.DeviceRecordService;
 import com.example.deviceManage.service.DeviceService;
 import org.apache.commons.lang.StringUtils;
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sun.security.util.DerEncoder;
 
 import java.util.List;
 
@@ -58,6 +55,7 @@ public class DeviceController {
                             .or()
                             .eq("audit_status", "归还审核中");
                 })
+                .orderByDesc("type_name")
         );
 
         List<Device> records = list.getRecords();
