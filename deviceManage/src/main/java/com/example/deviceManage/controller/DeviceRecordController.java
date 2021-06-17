@@ -28,7 +28,7 @@ public class DeviceRecordController {
         IPage<DeviceRecord> list = deviceRecordService.selectPageVo(new Page<>(page, limit), new QueryWrapper<DeviceRecord>()
                 .eq(agree!=null,"r.agree",agree)
                 .eq(type!=null,"type",type)
-                .orderByDesc("d.type_name")
+                .orderByAsc("d.type_name")
         );
 
         return R.ok(list);

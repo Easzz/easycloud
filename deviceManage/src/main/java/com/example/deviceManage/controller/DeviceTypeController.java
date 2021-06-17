@@ -33,7 +33,7 @@ public class DeviceTypeController {
 
 		IPage list = deviceTypeService.page(new Page<>(page,limit), new QueryWrapper<DeviceType>()
 				.like(StringUtils.isNotBlank(deviceType.getTypeName()), "type_name", deviceType.getTypeName())
-				.orderByDesc("type_name")
+				.orderByAsc("type_name")
 		);
 
 		return R.ok(list);
