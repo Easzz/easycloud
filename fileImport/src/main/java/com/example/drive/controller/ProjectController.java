@@ -67,6 +67,7 @@ public class ProjectController {
 		//判断是否相同，相同则替换
 		ProjectItemSub dbItem = projectItemSub.selectOne(new QueryWrapper<ProjectItemSub>()
 				.eq("project_id", projectItemSub.getProjectId())
+				.eq(projectItemSub.getPlatformId() != null, "platform_id", projectItemSub.getPlatformId())
 				.eq("drive_name", projectItemSub.getDriveName())
 				.eq("manufacturer", projectItemSub.getManufacturer())
 				.eq("platform", projectItemSub.getPlatform()));
@@ -108,8 +109,8 @@ public class ProjectController {
 	/**
 	 * map 按 key 升序排序
 	 */
-	private static Map<String,  List<ProjectItemSub>> sortByKey(Map<String,  List<ProjectItemSub>> map) {
-		Map<String,  List<ProjectItemSub>> result = new LinkedHashMap<>(map.size());
+	private static Map<String, List<ProjectItemSub>> sortByKey(Map<String, List<ProjectItemSub>> map) {
+		Map<String, List<ProjectItemSub>> result = new LinkedHashMap<>(map.size());
 		map.entrySet().stream()
 				.sorted(Map.Entry.comparingByKey())
 				.forEachOrdered(e -> result.put(e.getKey(), e.getValue()));
@@ -121,9 +122,12 @@ public class ProjectController {
 	public R<List<ProjectItem>> getFacilityList(Long projectId) {
 //		List<ProjectItemSub> projectItems = projectItemMapper.buildList(projectId);
 
-		List<ProjectItemSub> projectItems = projectItemSubMapper.selectList(new QueryWrapper<ProjectItemSub>()
-				.eq("project_id", projectId)
-		);
+//		List<ProjectItemSub> projectItems = projectItemSubMapper.selectList(new QueryWrapper<ProjectItemSub>()
+//				.eq("project_id", projectId)
+//		);
+
+		List<ProjectItemSub> projectItems = projectItemSubMapper.selectInfo(new QueryWrapper<ProjectItemSub>()
+				.eq("s.project_id", projectId));
 
 
 		List<ProjectItem> result = new ArrayList<>();
@@ -149,9 +153,9 @@ public class ProjectController {
 				List<ProjectItemSub> projectItemSubs1 = manufacturerMap.get(manufacturerKey);
 
 				String description = projectItemSubs1.get(0).getDescription();
-				if (StringUtils.isBlank(description)){
+				if (StringUtils.isBlank(description)) {
 					item.setDescription("-");
-				}else {
+				} else {
 					item.setDescription(description);
 				}
 
@@ -163,10 +167,10 @@ public class ProjectController {
 
 					List<ProjectItemSub> sub = platformMap.get(platformKey);
 
-					if (platformKey.equalsIgnoreCase("win7")) {
+					if ("win7".equalsIgnoreCase(platformKey)) {
 						item.setWin7SubList(sub);
 					}
-					if (platformKey.equalsIgnoreCase("win10")) {
+					if ("win10".equalsIgnoreCase(platformKey)) {
 						item.setWin10SubList(sub);
 					}
 

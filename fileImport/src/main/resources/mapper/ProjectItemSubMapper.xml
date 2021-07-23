@@ -10,5 +10,9 @@
 		<result property="driveDate" column="drive_date"/>
 		<result property="url" column="url"/>
 	</resultMap>
+	<select id="selectInfo" resultType="com.example.drive.entity.ProjectItemSub">
+select s.*,t.terrace_name from project_item_sub s LEFT JOIN terrace t on s.terrace_id=t.id
+  ${ew.customSqlSegment}
+	</select>
 
 </mapper>
