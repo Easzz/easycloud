@@ -46,12 +46,23 @@ public class ProjectController {
 		return R.ok(fileUploadConfig);
 	}
 
+
+	@GetMapping("/info")
+	public R info(Long projectId) {
+
+		IPage<Project> projectIPage=projectMapper.selectListInfo(new Page<>(1, 1),new QueryWrapper<Project>()
+				.eq( "p.id", projectId)
+				.orderByDesc("p.id"));
+
+		return R.ok(projectIPage.getRecords().get(0));
+	}
+
 	@GetMapping("/save")
 	public R save(Project project) {
 
-
 		Integer count = projectMapper.selectCount(new QueryWrapper<Project>()
 				.eq("project_name", project.getProjectName())
+				.eq("terrace_id", project.getTerraceId())
 		);
 		if (count > 0) {
 			return R.failed("已存在重复记录");
@@ -64,19 +75,28 @@ public class ProjectController {
 	@GetMapping("/saveItem")
 	public R saveItem(ProjectItemSub projectItemSub) {
 
+		Project project = projectMapper.selectById(projectItemSub.getProjectId());
+		projectItemSub.setTerraceId(project.getTerraceId());
+
+
 		//判断是否相同，相同则替换
 		ProjectItemSub dbItem = projectItemSub.selectOne(new QueryWrapper<ProjectItemSub>()
 				.eq("project_id", projectItemSub.getProjectId())
-				.eq(projectItemSub.getPlatformId() != null, "platform_id", projectItemSub.getPlatformId())
+				.eq(projectItemSub.getTerraceId() != null, "terrace_id", projectItemSub.getTerraceName())
 				.eq("drive_name", projectItemSub.getDriveName())
 				.eq("manufacturer", projectItemSub.getManufacturer())
 				.eq("platform", projectItemSub.getPlatform()));
+
+
 
 		if (dbItem != null) {
 			projectItemSub.setId(dbItem.getId());
 			projectItemSubMapper.updateById(projectItemSub);
 			return R.ok();
 		}
+
+
+
 
 		projectItemSub.insert();
 		return R.ok();
@@ -89,10 +109,12 @@ public class ProjectController {
 			page = 1;
 			limit = Integer.MAX_VALUE;
 		}
-
-		IPage<Project> projectIPage = projectMapper.selectPage(new Page<>(page, limit), new QueryWrapper<Project>()
+		IPage<Project> projectIPage=projectMapper.selectListInfo(new Page<>(page, limit),new QueryWrapper<Project>()
 				.like(StringUtils.isNotBlank(projectName), "project_name", projectName)
-				.orderByDesc("id"));
+				.orderByDesc("p.id"));
+//		IPage<Project> projectIPage = projectMapper.selectPage(new Page<>(page, limit), new QueryWrapper<Project>()
+//				.like(StringUtils.isNotBlank(projectName), "project_name", projectName)
+//				.orderByDesc("id"));
 		return new R<>(projectIPage.getRecords());
 	}
 
@@ -153,6 +175,8 @@ public class ProjectController {
 				List<ProjectItemSub> projectItemSubs1 = manufacturerMap.get(manufacturerKey);
 
 				String description = projectItemSubs1.get(0).getDescription();
+				String terraceName = projectItemSubs1.get(0).getTerraceName();
+				item.setTerraceName(terraceName);
 				if (StringUtils.isBlank(description)) {
 					item.setDescription("-");
 				} else {

@@ -4,4 +4,12 @@
 
 <mapper namespace="com.example.drive.mapper.ProjectMapper">
 
+	<select id="selectListInfo" resultType="com.example.drive.entity.Project">
+		select p.*,t.terrace_name from project p left join  terrace t on p.terrace_id=t.id
+		  ${ew.customSqlSegment}
+	</select>
+	<select id="selectInfo" resultType="com.example.drive.entity.Project">
+		select * from
+
+	</select>
 </mapper>

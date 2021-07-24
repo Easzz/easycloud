@@ -29,11 +29,15 @@ public class ProjectItem extends Model<ProjectItem> {
 
 	private String driveName;
 
+	@ApiModelProperty(value = "系统名称")
 	private String platform;
 
 	private String manufacturer;
 
 	private String description;
+
+	@ApiModelProperty(value = "平台名称")
+	private String terraceName;
 
 	@TableField(exist = false)
 	private List<ProjectItemSub> win7SubList;

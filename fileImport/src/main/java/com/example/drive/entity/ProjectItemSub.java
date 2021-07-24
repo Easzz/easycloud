@@ -43,10 +43,10 @@ public class ProjectItemSub extends Model<ProjectItemSub> {
 	@TableField(value = "gmt_create", fill = FieldFill.INSERT)
 	private Date gmtCreate;
 
-	private Long platformId;
+	private Long terraceId;
 
 	@TableField(exist = false)
-	private String platformName;
+	private String terraceName;
 
 
 }

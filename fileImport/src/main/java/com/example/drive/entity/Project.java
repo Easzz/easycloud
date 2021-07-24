@@ -31,6 +31,11 @@ public class Project extends Model<Project> {
 	@ApiModelProperty(value = "设备id")
 	private String projectName;
 
+	private Long terraceId;
+
+	@TableField(exist = false)
+	private String terraceName;
+
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	@TableField(value = "gmt_create", fill = FieldFill.INSERT)
 	private Date gmtCreate;
