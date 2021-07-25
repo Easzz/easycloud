@@ -8,10 +8,12 @@ import com.example.drive.entity.Project;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface ProjectMapper extends BaseMapper<Project> {
 
-	IPage<Project> selectListInfo(Page p, @Param("ew") QueryWrapper<Project> orderByDesc);
+	List<Project> selectListInfo(Page p, @Param("ew") QueryWrapper<Project> orderByDesc);
 
 	Project selectInfo( @Param("projectId") Long projectId);
 }
