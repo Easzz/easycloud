@@ -8,7 +8,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.drive.config.R;
+import com.example.drive.entity.Project;
 import com.example.drive.entity.Terrace;
+import com.example.drive.mapper.ProjectMapper;
 import com.example.drive.mapper.TerraceMapper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,21 @@ public class TerraceController {
 	@Autowired
 	private TerraceMapper terraceMapper;
 
+	@Autowired
+	private ProjectMapper projectMapper;
 
+	@GetMapping("/getTerraceAndProject")
+	public R<List<Terrace>> getTerraceAndProject() {
+		List<Terrace> terraces = terraceMapper.selectList(null);
+		for (Terrace terrace : terraces) {
+			List<Project> projectList = projectMapper.selectList(new QueryWrapper<Project>()
+					.eq("terrace_id", terrace.getId())
+			);
+			terrace.setProjectList(projectList);
+		}
+
+		return new R<>(terraces);
+	}
 
 	@GetMapping("/getTerraceList")
 	public R<List<Terrace>> getProjectList(Integer page, Integer limit, String terraceName) {

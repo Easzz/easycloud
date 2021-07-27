@@ -2,6 +2,7 @@ package com.example.drive.controller;
 
 
 import com.example.drive.entity.Fraction;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,56 +12,73 @@ import java.util.Map;
 public class Test {
 
     public static void main(String[] args) {
-        List<Fraction> list=new ArrayList();
-
-        List<Fraction> list1 = new ArrayList<>();
-        Fraction fraction1 = new Fraction();
-        fraction1.setStudent("小明");
-        fraction1.setChinese(98);
-        fraction1.setMathematics(null);
-        fraction1.setEnglish(null);
-        list1.add(fraction1);
-
-        List<Fraction> list2 = new ArrayList<>();
-        Fraction fraction2 = new Fraction();
-        fraction2.setStudent("小明");
-        fraction2.setChinese(null);
-        fraction2.setMathematics(92);
-        fraction2.setEnglish(null);
-        list2.add(fraction2);
-
-        List<Fraction> list3 = new ArrayList<>();
-        Fraction fraction3 = new Fraction();
-        fraction3.setStudent("小明");
-        fraction3.setChinese(null);
-        fraction3.setMathematics(null);
-        fraction3.setEnglish(90);
 
 
-        list.addAll(list1);
+        List<Map<String, String>> list = new ArrayList<>();
+        Map<String, String> m = new HashMap<>();
+        m.put("a", "1");
+        m.put("b", "");
+        m.put("c", "");
+        list.add(m);
+        m = new HashMap<>();
+        m.put("a", "");
+        m.put("b", "2");
+        m.put("c", "22");
+        list.add(m);
+        m = new HashMap<>();
+        m.put("a", "222");
+        m.put("b", "");
+        m.put("c", "");
+        list.add(m);
+        m = new HashMap<>();
+        m.put("a", "");
+        m.put("b", "");
+        m.put("c", "1222");
+        list.add(m);
 
-        list.addAll(list2);
-        list.addAll(list3);
+        Map<String, List<String>> all = new HashMap<>();
+        Map<String, String> stringStringMap = list.get(0);
+        for (String s : stringStringMap.keySet()) {
+            all.put(s, new ArrayList<>());
+        }
+        list.forEach(l -> {
+            for (String s : l.keySet()) {
+                List<String> list1 = all.get(s);
+                if (!StringUtils.isBlank(l.get(s))) {
+                    list1.add(l.get(s));
+                }
 
-
-
-        Map<String, Fraction> result = new HashMap<>();
-        for (Fraction item : list) {
-            String name = item.getStudent();
-            if (result.get(name) == null) {
-                result.put(name, item);
             }
-            if (item.getChinese() != null) {
-                result.get(name).setChinese(item.getChinese());
-            }
-            if (item.getEnglish() != null) {
-                result.get(name).setEnglish(item.getEnglish());
-            }
-            if (item.getMathematics() != null) {
-                result.get(name).setMathematics(item.getMathematics());
+        });
+        System.out.println(all);
+        //获取最大的长度
+        int maxLength = 0;
+        for (String s : all.keySet()) {
+            List<String> list1 = all.get(s);
+            if (list1.size() > maxLength) {
+                maxLength = list1.size();
             }
         }
-        System.out.println(result);
+        System.out.println(maxLength);
 
+        List<Map<String, String>> result = new ArrayList<>();
+        for (int i = 0; i < maxLength; i++) {
+            Map<String, String> m1 = new HashMap<>();
+
+            for (String s : all.keySet()) {
+                List<String> list1 = all.get(s);
+                try {
+                    String s1 = list1.get(i);
+                    m1.put(s, s1);
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println("e");
+                }
+            }
+
+            result.add(m1);
+        }
+        System.out.println(result);
     }
+
+
 }

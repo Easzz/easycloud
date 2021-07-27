@@ -12,6 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @TableName("terrace")
@@ -30,5 +31,8 @@ public class Terrace extends Model<Terrace> {
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	@TableField(value = "gmt_create", fill = FieldFill.INSERT)
 	private Date gmtCreate;
+
+	@TableField(exist = false)
+	private List<Project> projectList;
 
 }
