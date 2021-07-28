@@ -119,6 +119,7 @@ public class ProjectController {
 		IPage<Project> projectIPage=projectService.selectListInfo(new Page<>(page, limit),new QueryWrapper<Project>()
 				.like(StringUtils.isNotBlank(projectName), "p.project_name", projectName)
 				.eq(terraceId!=null,"p.terrace_id",terraceId)
+				.eq("1",1)
 				.orderByAsc("p.project_name"));
 //		IPage<Project> projectIPage = projectMapper.selectPage(new Page<>(page, limit), new QueryWrapper<Project>()
 //				.like(StringUtils.isNotBlank(projectName), "project_name", projectName)
