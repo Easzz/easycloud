@@ -32,10 +32,13 @@ public class TerraceController {
 
 	@GetMapping("/getTerraceAndProject")
 	public R<List<Terrace>> getTerraceAndProject() {
-		List<Terrace> terraces = terraceMapper.selectList(null);
+		List<Terrace> terraces = terraceMapper.selectList(new QueryWrapper<Terrace>()
+				.orderByAsc("terrace_name")
+		);
 		for (Terrace terrace : terraces) {
 			List<Project> projectList = projectMapper.selectList(new QueryWrapper<Project>()
 					.eq("terrace_id", terrace.getId())
+					.orderByAsc("project_name")
 			);
 			terrace.setProjectList(projectList);
 		}
@@ -44,7 +47,7 @@ public class TerraceController {
 	}
 
 	@GetMapping("/getTerraceList")
-	public R<List<Terrace>> getProjectList(Integer page, Integer limit, String terraceName) {
+	public R<IPage<Terrace>> getProjectList(Integer page, Integer limit, String terraceName) {
 
 		if (page == null || limit == null) {
 			page = 1;
@@ -53,8 +56,8 @@ public class TerraceController {
 
 		IPage<Terrace> terraceIPage = terraceMapper.selectPage(new Page<>(page, limit), new QueryWrapper<Terrace>()
 				.like(StringUtils.isNotBlank(terraceName), "terrace_name", terraceName)
-				.orderByDesc("id"));
-		return new R<>(terraceIPage.getRecords());
+				.orderByAsc("terrace_name"));
+		return new R<>(terraceIPage);
 	}
 
 

@@ -58,7 +58,7 @@ public class ProjectController {
 
 		IPage<Project> projectIPage=projectService.selectListInfo(new Page<>(1, 1),new QueryWrapper<Project>()
 				.eq( "p.id", projectId)
-				.orderByDesc("p.id"));
+				.orderByDesc("p.project_name"));
 
 		return R.ok(projectIPage.getRecords().get(0));
 	}
@@ -119,7 +119,7 @@ public class ProjectController {
 		IPage<Project> projectIPage=projectService.selectListInfo(new Page<>(page, limit),new QueryWrapper<Project>()
 				.like(StringUtils.isNotBlank(projectName), "p.project_name", projectName)
 				.eq(terraceId!=null,"p.terrace_id",terraceId)
-				.orderByDesc("p.id"));
+				.orderByAsc("p.project_name"));
 //		IPage<Project> projectIPage = projectMapper.selectPage(new Page<>(page, limit), new QueryWrapper<Project>()
 //				.like(StringUtils.isNotBlank(projectName), "project_name", projectName)
 //				.orderByDesc("id"));
