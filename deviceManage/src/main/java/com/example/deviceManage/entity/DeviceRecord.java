@@ -42,6 +42,9 @@ public class DeviceRecord extends Model<DeviceRecord> {
 	//0 未审核，1-同意  2->拒绝
 	private Integer agree;
 
+	private String remark;
+
+
 //	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	@TableField(value = "gmt_create", fill = FieldFill.INSERT)
 	private Date gmtCreate;

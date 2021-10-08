@@ -8,4 +8,5 @@ public class AuditVo {
     private Long userId;
 
     private Long[] recordIds;
+    private String remark;
 }
