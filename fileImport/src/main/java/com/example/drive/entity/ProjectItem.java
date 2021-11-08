@@ -45,4 +45,7 @@ public class ProjectItem extends Model<ProjectItem> {
 	@TableField(exist = false)
 	private List<ProjectItemSub> win10SubList;
 
+	@TableField(exist = false)
+	private List<ProjectItemSub> win11SubList;
+
 }

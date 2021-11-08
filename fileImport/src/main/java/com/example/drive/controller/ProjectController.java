@@ -25,8 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/project")
@@ -313,6 +311,9 @@ System.out.println(list);
 					}
 					if ("win10".equalsIgnoreCase(platformKey)) {
 						item.setWin10SubList(sub);
+					}
+					if ("win11".equalsIgnoreCase(platformKey)) {
+						item.setWin11SubList(sub);
 					}
 
 				}
