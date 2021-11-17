@@ -23,6 +23,7 @@
         <module>stock</module>
         <module>fileImport</module>
         <module>deviceManage</module>
+        <module>dbFiledExport</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
