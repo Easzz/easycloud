@@ -14,6 +14,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.StopWatch;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,24 +34,23 @@ public class RedisTest {
 
         StopWatch watch = new StopWatch();
         watch.start();
-//      for (int i = 0; i < 10000; i++) {
-//           redisTemplate.opsForHash().get("test", i);
-////            Object o = redisTemplate.opsForValue().get();
-//       }
+        List<String> keys = new ArrayList<>();
+        for (int i = 0; i < 10000; i++) {
+            keys.add(String.valueOf(i));
+        }
 
-
-        List list = redisTemplate.executePipelined(new RedisCallback<Object>() {
-            @Override
-            public Object doInRedis(RedisConnection redisConnection) throws DataAccessException {
+        List list = redisTemplate.executePipelined((RedisCallback<Object>) redisConnection -> {
 //                redisConnection.openPipeline();
-                for (int i = 0; i < 10000; i++) {
-//                    redisConnection.hGet("test".getBytes(), String.valueOf(i).getBytes());
-                    redisConnection.get(String.valueOf(i).getBytes());
-//                    redisConnection.set(String.valueOf(i).getBytes(),String.valueOf(i).getBytes());
-//                    Object test = redisTemplate.opsForHash().get("test", i);
-                }
-                return null;
+            for (String key : keys) {
+                redisConnection.hGet("test".getBytes(), key.getBytes());
             }
+//                for (int i = 0; i < 10000; i++) {
+////                    redisConnection.hGet("test".getBytes(), String.valueOf(i).getBytes());
+//                    redisConnection.get(String.valueOf(i).getBytes());
+////                    redisConnection.set(String.valueOf(i).getBytes(),String.valueOf(i).getBytes());
+////                    Object test = redisTemplate.opsForHash().get("test", i);
+//                }
+            return null;
         });
 
         watch.stop();
