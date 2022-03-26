@@ -21,8 +21,6 @@ public class CollectionCalculate {
         list2.add("4444");
         list2.add("5555");
 
-
-
         //交集
         List<String> collect = list1.stream().filter(list2::contains).collect(Collectors.toList());
         System.out.println(collect);
@@ -42,6 +40,29 @@ public class CollectionCalculate {
         //去重并集
         List<String> collect3 = list1.stream().distinct().collect(Collectors.toList());
         System.out.println(collect3);
+
+
+        List<Long> db=new ArrayList<>();
+        db.add(111L);
+        db.add(112L);
+        db.add(113L);
+        db.add(114L);
+
+
+        List<Long> newList=new ArrayList<>();
+        newList.add(111L);
+        newList.add(112L);
+        newList.add(115L);
+
+
+        //删除
+        List<Long> del = db.stream().filter(i -> !newList.contains(i)).collect(Collectors.toList());
+        System.out.println(del);
+
+
+        //新增
+        List<Long> add = newList.stream().filter(i -> !db.contains(i)).collect(Collectors.toList());
+        System.out.println(add);
 
 
     }

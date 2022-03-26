@@ -89,6 +89,7 @@ public class DeviceController {
 			Device device = new Device();
 			device.setId(deviceId);
 			device.setAuditStatus("借出审核中");
+			device.setRemark(auditVo.getRemark());
 			deviceService.updateById(device);
 
 			DeviceRecord record = new DeviceRecord();
@@ -96,6 +97,7 @@ public class DeviceController {
 			record.setUserId(auditVo.getUserId());
 			record.setAgree(0);
 			record.setType("借出审核中");
+			record.setRemark(auditVo.getRemark());
 			record.insert();
 		}
 
@@ -109,11 +111,19 @@ public class DeviceController {
 
 		if (agree == 1) {
 			//同意
-			Device device = new Device();
-			device.setId(record.getDeviceId());
-			device.setAuditStatus("已借出");
-			device.setUserId(record.getUserId());
-			deviceService.updateById(device);
+//			Device device = new Device();
+//			device.setUserId(record.getUserId());
+//			device.setRemark(" ");
+//			deviceService.updateById(device);
+
+			deviceService.lambdaUpdate()
+					.eq(Device::getId, record.getDeviceId())
+					.set(Device::getAuditStatus, "已借出")
+					.set(Device::getUserId, record.getUserId())
+//					.set(Device::getRemark, null)
+					.update();
+
+
 			record.setId(deviceRecordId);
 			record.setAgree(1);
 			record.setType("已借出");
@@ -127,7 +137,6 @@ public class DeviceController {
 					.eq(DeviceRecord::getDeviceId, record.getDeviceId())
 					.eq(DeviceRecord::getType, "已借出")
 					.ne(DeviceRecord::getUserId, record.getUserId())
-
 			);
 
 		} else {
@@ -143,6 +152,7 @@ public class DeviceController {
 						.eq(Device::getId, record.getDeviceId())
 						.set(Device::getUserId, null)
 						.set(Device::getAuditStatus, "在库")
+//						.set(Device::getRemark, null)
 						.update();
 			}
 		}
@@ -197,6 +207,7 @@ public class DeviceController {
 					.eq(Device::getId, record.getDeviceId())
 					.set(Device::getUserId, null)
 					.set(Device::getAuditStatus, "在库")
+					.set(Device::getRemark, null)
 					.update();
 			DeviceRecord deviceRecord = new DeviceRecord();
 			deviceRecord.setId(deviceRecordId);
