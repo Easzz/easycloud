@@ -1,0 +1,94 @@
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : localhost
+Source Server Version : 50520
+Source Host           : localhost:3306
+Source Database       : renren_security
+
+Target Server Type    : MYSQL
+Target Server Version : 50520
+File Encoding         : 65001
+
+Date: 2019-08-29 19:05:16
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for bz_manager
+-- ----------------------------
+DROP TABLE IF EXISTS `bz_manager`;
+CREATE TABLE `bz_manager` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `manager_name` varchar(255) DEFAULT NULL,
+  `manager_age` int(11) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of bz_manager
+-- ----------------------------
+INSERT INTO `bz_manager` VALUES ('1', '管理者1', '12', null);
+INSERT INTO `bz_manager` VALUES ('2', '管理者2', '12', null);
+INSERT INTO `bz_manager` VALUES ('3', '管理者3', '12', null);
+INSERT INTO `bz_manager` VALUES ('4', '管理者4', '12', '2019-08-28 15:17:32');
+INSERT INTO `bz_manager` VALUES ('5', '管理者5', '12', '2019-08-28 15:22:14');
+INSERT INTO `bz_manager` VALUES ('6', '管理者6', '12', '2019-08-29 17:32:49');
+
+-- ----------------------------
+-- Table structure for bz_people
+-- ----------------------------
+DROP TABLE IF EXISTS `bz_people`;
+CREATE TABLE `bz_people` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `manager_id` bigint(11) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of bz_people
+-- ----------------------------
+INSERT INTO `bz_people` VALUES ('1', 'p1', null, '123@q.com', '5', null, null);
+INSERT INTO `bz_people` VALUES ('2', 'p2', '2', '123@q.com', '6', null, null);
+INSERT INTO `bz_people` VALUES ('3', '乐观锁测试', '10', null, null, null, '0');
+INSERT INTO `bz_people` VALUES ('4', '乐观锁测试', '10', null, null, null, '0');
+INSERT INTO `bz_people` VALUES ('5', '乐观锁测试', '10', null, null, null, '0');
+INSERT INTO `bz_people` VALUES ('6', '乐观锁测试', '10', null, null, null, '0');
+INSERT INTO `bz_people` VALUES ('7', '乐观锁测试', '10', null, null, null, '0');
+INSERT INTO `bz_people` VALUES ('8', '乐观锁测试', '10', null, null, null, '1');
+
+-- ----------------------------
+-- Table structure for bz_student
+-- ----------------------------
+DROP TABLE IF EXISTS `bz_student`;
+CREATE TABLE `bz_student` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `student_name` varchar(255) DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
+  `valid` tinyint(1) DEFAULT '1',
+  `gmt_create` datetime DEFAULT NULL,
+  `gmt_modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of bz_student
+-- ----------------------------
+INSERT INTO `bz_student` VALUES ('1', '123213', '1', '1', null, null);
+INSERT INTO `bz_student` VALUES ('2', '123213', '1', '1', null, null);
+INSERT INTO `bz_student` VALUES ('3', '123213', '1', '1', null, null);
+INSERT INTO `bz_student` VALUES ('4', '123213', '1', '1', null, null);
+INSERT INTO `bz_student` VALUES ('5', 'mik', '1', '1', null, null);
+INSERT INTO `bz_student` VALUES ('6', 'mik', '1', '1', null, null);
+INSERT INTO `bz_student` VALUES ('7', 'mik', '1', '1', null, null);
+INSERT INTO `bz_student` VALUES ('8', 'mik', '1', '1', null, null);
+INSERT INTO `bz_student` VALUES ('9', 'mik', '1', '1', null, null);
+INSERT INTO `bz_student` VALUES ('10', 'mik', '1', '1', null, null);
+INSERT INTO `bz_student` VALUES ('11', 'mik', '1', '1', null, null);

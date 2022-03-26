@@ -9,7 +9,7 @@
         <relativePath/>
     </parent>
     <groupId>com.findshen</groupId>
-    <artifactId>common</artifactId>
+    <artifactId>redist</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>common</name>
     <description>Demo project for Spring Boot</description>
