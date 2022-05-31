@@ -1,0 +1,1 @@
+if getData(name)==0 return 111;

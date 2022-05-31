@@ -16,23 +16,35 @@ import java.util.concurrent.Executors;
  */
 public class ThreadPoolTest {
 	public static void main(String[] args) throws IOException, InterruptedException {
-		final String url = "http://blog.csdn.net/easzz/article/details/77140685";
 		ExecutorService executorService = Executors.newFixedThreadPool(10);
-		final CountDownLatch countDownLatch=new CountDownLatch(1000);
+		final CountDownLatch countDownLatch = new CountDownLatch(100000);
 		long startTime = System.currentTimeMillis();    //获取开始时间
-		executorService.submit(new Runnable() {
-			@Override
-			public void run() {
-				for(int i=0;i<1000;i++){
-					doGet(url);
-					System.out.println(i);
+
+		for (int j = 0; j < 10; j++) {
+			executorService.execute(() -> {
+				for (int i = 0; i < 10000; i++) {
+					System.out.println(i + "thread:" + Thread.currentThread().getName());
 					countDownLatch.countDown();
 				}
-			}
-		});
+			});
+		}
+
+//
+//		executorService.submit(new Runnable() {
+//			@Override
+//			public void run() {
+//				for (int i = 0; i < 1000; i++) {
+//					doGet(url);
+//					System.out.println(i);
+//					countDownLatch.countDown();
+//				}
+//			}
+//		});
 		countDownLatch.await();
-		System.out.println("aa"+(System.currentTimeMillis() - startTime));
+
 		executorService.shutdown();
+
+		System.out.println("aa" + (System.currentTimeMillis() - startTime));
 	}
 
 	public static void doGet(String url) {
