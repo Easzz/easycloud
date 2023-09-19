@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.example.drive.mapper.NotTestProjectMapper">
+
+	<select id="selectListInfo" resultType="com.example.drive.entity.NotTestProject">
+		select p.*,t.terrace_name from not_test_project p left join  not_test_terrace t on p.terrace_id=t.id
+		  ${ew.customSqlSegment}
+	</select>
+	<select id="selectInfo" resultType="com.example.drive.entity.NotTestProject">
+		select * from
+
+	</select>
+</mapper>

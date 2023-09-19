@@ -21,7 +21,7 @@
         <module>corejava</module>
         <module>jms</module>
         <module>stock</module>
-        <module>fileImport</module>
+        <module>driver</module>
         <module>deviceManage</module>
         <module>redis</module>
     </modules>

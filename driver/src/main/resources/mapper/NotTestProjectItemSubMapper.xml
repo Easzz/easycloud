@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.drive.mapper.NotTestProjectItemSubMapper">
+
+
+
+	<resultMap id="subMap" type="com.example.drive.entity.NotTestProjectItemSub" >
+		<result property="version" column="version"/>
+		<result property="driveDate" column="drive_date"/>
+		<result property="url" column="url"/>
+	</resultMap>
+	<select id="selectInfo" resultType="com.example.drive.entity.NotTestProjectItemSub">
+select s.*,t.terrace_name from not_test_project_item_sub s LEFT JOIN not_test_project p on s.project_id=p.id
+left join not_test_terrace t on t.id=p.terrace_id
+
+  ${ew.customSqlSegment}
+	</select>
+
+</mapper>

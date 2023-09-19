@@ -1,26 +1,21 @@
 package com.findshen.stock;
 
-import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSON;
-
-import java.sql.Struct;
-import java.util.ArrayList;
-import java.util.List;
+import cn.hutool.http.HttpResponse;
+import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSONObject;
 
 public class A {
     public static void main(String[] args) {
-        List<String> uids=new ArrayList<>();
-        uids.add("sdfsdf");
-        uids.add("fwefwefw");
-        System.out.println(uids.toString());
-        String s = StrUtil.toString(uids);
-        System.out.println(JSON.toJSONString(uids));
+        //02472592974795730101
+        String postUrl = "https://192.168.10.5:18531/device/subscribealarm";
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.set("requestXML", "<Content><Sub14List><SubscribeInfo><AlarmsIncode>123</AlarmIncode></SubscribeInfo></AddSubscribeList></Subscribe></Content>");
 
-
-        String substring = "测试abc".substring(0, 99);
-        System.out.println("测试".length());
-        System.out.println(substring);
+        System.out.println(jsonObject.toString());
+        HttpResponse execute = HttpUtil.createPost(postUrl).contentType("application/json").header("Cookie", "JSESSIONID=snc2isLlq5biTkcJmld2ODILhmjIFkjy")
+                .body(jsonObject.toString()).execute();
+        System.out.println(execute.body());
+        System.out.println(execute.getCookies());
 
     }
 

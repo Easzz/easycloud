@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.drive.mapper.NotTestProjectItemMapper">
+
+
+	<resultMap id="listDetailsMap" type="com.example.drive.entity.NotTestProjectItem" >
+		<collection property="win7SubList" resultMap="com.example.drive.mapper.NotTestProjectItemSubMapper.subMap"/>
+	</resultMap>
+
+
+
+	<select id="buildList" resultType="com.example.drive.entity.NotTestProjectItemSub" parameterType="Long">
+
+select pi.*,s.version,s.drive_date,s.url,pi.platform
+
+from not_test_project_item pi LEFT JOIN not_test_project_item_sub s on pi.id=s.project_item_id
+where pi.project_id=#{projectId}
+
+
+	</select>
+
+</mapper>

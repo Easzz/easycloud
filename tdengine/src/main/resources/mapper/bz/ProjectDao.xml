@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.findshen.modules.bz.dao.PeopleDao">
+
+	<select id="selectVoList" resultType="com.findshen.modules.bz.entity.People">
+		select p.*,m.manager_age,m.manager_name from bz_people p LEFT JOIN bz_manager m on p.manager_id=m.id
+
+				${ew.customSqlSegment}
+
+		<!--<where>
+			${ew.sqlSegment}
+		</where>-->
+
+	</select>
+	<select id="selectVoList4Lambda" resultType="com.findshen.modules.bz.entity.People">
+		select p.*,m.manager_age,m.manager_name from bz_people p LEFT JOIN bz_manager m on p.manager_id=m.id
+
+		${ew.sqlSegment}
+	</select>
+</mapper>
