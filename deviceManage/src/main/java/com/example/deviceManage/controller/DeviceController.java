@@ -152,7 +152,7 @@ public class DeviceController {
 						.eq(Device::getId, record.getDeviceId())
 						.set(Device::getUserId, null)
 						.set(Device::getAuditStatus, "在库")
-//						.set(Device::getRemark, null)
+						.set(Device::getRemark, null)
 						.update();
 			}
 		}
