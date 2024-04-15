@@ -9,4 +9,8 @@ public class AuditVo {
 
     private Long[] recordIds;
     private String remark;
+
+
+    private Integer agree;
+    private Boolean isDamage;
 }

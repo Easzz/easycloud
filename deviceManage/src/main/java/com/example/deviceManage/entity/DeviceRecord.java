@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,7 +32,10 @@ public class DeviceRecord extends Model<DeviceRecord> {
 	@TableField(exist = false)
 	private String typeName;
 	@TableField(exist = false)
-	private String damage;
+	private Boolean isDamage;
+
+	@TableField(exist = false)
+	private String damageText;
 
 
 
@@ -47,9 +51,17 @@ public class DeviceRecord extends Model<DeviceRecord> {
 
 //	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	@TableField(value = "gmt_create", fill = FieldFill.INSERT)
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	private Date gmtCreate;
 
 
 	@TableField(value = "gmt_modified", fill = FieldFill.UPDATE)
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	private Date gmtModified;
+
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+	private Date inTime;
+
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+	private Date outTime;
 }

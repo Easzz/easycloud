@@ -18,6 +18,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -39,7 +40,10 @@ public class DeviceController {
 		IPage<Device> list = deviceService.selectPageVo(new Page<>(page, limit), new QueryWrapper<Device>()
 				.like(StringUtils.isNotBlank(device.getDeviceName()), "device_name", device.getDeviceName())
 				.eq(device.getTypeId() != null, "type_id", device.getTypeId())
+				.like(StringUtils.isNotBlank(device.getRealName()), "u.real_name", device.getRealName())
+				.like(StringUtils.isNotBlank(device.getRemark()), "remark", device.getRemark())
 				.eq(device.getRoleId() != null && device.getRoleId() == 1, "user_id", device.getUserId())
+
 				.and(queryType != null && queryType == 2, e -> {
 					e.eq("audit_status", "已借出")
 							.or()
@@ -61,6 +65,13 @@ public class DeviceController {
 			if (record.getUserId() == null) {
 				record.setBelong("在库");
 			}
+			if (record.getIsDamage() != null && record.getIsDamage()) {
+				record.setIsDamageText("是");
+			} else {
+				record.setIsDamageText(" ");
+			}
+
+
 		}
 		return R.ok(list);
 	}
@@ -81,6 +92,12 @@ public class DeviceController {
 	}
 
 
+	/**
+	 * 借出
+	 *
+	 * @param auditVo
+	 * @return
+	 */
 	@PostMapping("/out")
 	public R out(AuditVo auditVo) {
 		//userId
@@ -89,7 +106,7 @@ public class DeviceController {
 			Device device = new Device();
 			device.setId(deviceId);
 			device.setAuditStatus("借出审核中");
-			device.setRemark(auditVo.getRemark());
+//			device.setRemark(auditVo.getRemark());
 			deviceService.updateById(device);
 
 			DeviceRecord record = new DeviceRecord();
@@ -104,56 +121,57 @@ public class DeviceController {
 		return R.ok();
 	}
 
+	/**
+	 * 借出审核
+	 *
+	 * @return
+	 */
 	@PostMapping("/outAudit")
-	public R outAudit(Long deviceRecordId, Integer agree) {
+//	public R outAudit(Long deviceRecordId, Integer agree) {
+	public R outAudit(AuditVo auditVo) {
+		for (Long deviceRecordId : auditVo.getRecordIds()) {
+			DeviceRecord record = recordService.getById(deviceRecordId);
 
-		DeviceRecord record = recordService.getById(deviceRecordId);
-
-		if (agree == 1) {
-			//同意
+			if (auditVo.getAgree() == 1) {
+				//同意
 //			Device device = new Device();
 //			device.setUserId(record.getUserId());
 //			device.setRemark(" ");
 //			deviceService.updateById(device);
 
-			deviceService.lambdaUpdate()
-					.eq(Device::getId, record.getDeviceId())
-					.set(Device::getAuditStatus, "已借出")
-					.set(Device::getUserId, record.getUserId())
-//					.set(Device::getRemark, null)
-					.update();
-
-
-			record.setId(deviceRecordId);
-			record.setAgree(1);
-			record.setType("已借出");
-			record.updateById();
-
-			//将该设备其他未审核的设置为拒绝
-
-			DeviceRecord r = new DeviceRecord();
-			r.setAgree(2);
-			recordService.update(r, new LambdaQueryWrapper<DeviceRecord>()
-					.eq(DeviceRecord::getDeviceId, record.getDeviceId())
-					.eq(DeviceRecord::getType, "已借出")
-					.ne(DeviceRecord::getUserId, record.getUserId())
-			);
-
-		} else {
-			//审核不同意，查询是否还有其他待审核的
-			record.setAgree(2);
-			recordService.updateById(record);
-
-			List<DeviceRecord> deviceRecords = recordService.list(new LambdaQueryWrapper<DeviceRecord>()
-					.ne(DeviceRecord::getUserId, record.getUserId())
-					.eq(DeviceRecord::getDeviceId, record.getDeviceId()));
-			if (deviceRecords.size() == 0) {
 				deviceService.lambdaUpdate()
 						.eq(Device::getId, record.getDeviceId())
-						.set(Device::getUserId, null)
-						.set(Device::getAuditStatus, "在库")
-						.set(Device::getRemark, null)
+						.set(Device::getAuditStatus, "已借出")
+						.set(Device::getUserId, record.getUserId())
+						.set(Device::getUserId, record.getUserId())
+						.set(Device::getRemark, record.getRemark())
+						.set(Device::getOutTime, new Date())
+
 						.update();
+
+				record.setId(deviceRecordId);
+				record.setAgree(1);
+				record.setType("已借出");
+				record.setOutTime(new Date());
+				record.updateById();
+
+
+			} else {
+				//审核不同意，查询是否还有其他待审核的
+				record.setAgree(2);
+				recordService.updateById(record);
+
+				List<DeviceRecord> deviceRecords = recordService.list(new LambdaQueryWrapper<DeviceRecord>()
+						.ne(DeviceRecord::getUserId, record.getUserId())
+						.eq(DeviceRecord::getDeviceId, record.getDeviceId()));
+				if (deviceRecords.size() == 0) {
+					deviceService.lambdaUpdate()
+							.eq(Device::getId, record.getDeviceId())
+							.set(Device::getUserId, null)
+							.set(Device::getAuditStatus, "在库")
+							.set(Device::getRemark, null)
+							.update();
+				}
 			}
 		}
 
@@ -189,9 +207,17 @@ public class DeviceController {
 	}
 
 
-	@PostMapping("/inAudit")
-	public R in(Long deviceRecordId, Integer agree, String damage) {
-
+	/**
+	 * 单个用户归还审核，需要填写损坏情况。
+	 *
+	 * @param deviceRecordId
+	 * @param agree
+	 * @param isDamage
+	 * @param damageText
+	 * @return
+	 */
+	@PostMapping("/inAuditSingle")
+	public R inAuditSingle(Long deviceRecordId, Integer agree, Boolean isDamage, String damageText) {
 		DeviceRecord record = recordService.getById(deviceRecordId);
 
 		if (agree == 1) {
@@ -199,7 +225,7 @@ public class DeviceController {
 			Device device = new Device();
 			device.setId(record.getDeviceId());
 			device.setAuditStatus("在库");
-			device.setDamage(damage);
+			device.setIsDamage(isDamage);
 			deviceService.updateById(device);
 
 			device.setUserId(null);
@@ -208,11 +234,15 @@ public class DeviceController {
 					.set(Device::getUserId, null)
 					.set(Device::getAuditStatus, "在库")
 					.set(Device::getRemark, null)
+					.set(Device::getOutTime, null)
+					.set(Device::getInTime, new Date())
+
 					.update();
 			DeviceRecord deviceRecord = new DeviceRecord();
 			deviceRecord.setId(deviceRecordId);
 			deviceRecord.setAgree(1);
 			deviceRecord.setType("已归还");
+			deviceRecord.setInTime(new Date());
 			recordService.updateById(deviceRecord);
 
 		} else {
@@ -223,10 +253,62 @@ public class DeviceController {
 //					.set(Device::getAuditStatus,"在库")
 //					.update();
 		}
-
 		return R.ok();
 	}
 
+	@PostMapping("/inAudit")
+//	public R in(Long deviceRecordId, Integer agree, Boolean isDamage, String damageText) {
+	public R inAudit(AuditVo auditVo) {
+		Long[] recordIds = auditVo.getRecordIds();
+		for (Long recordId : recordIds) {
+			DeviceRecord record = recordService.getById(recordId);
+
+			if (auditVo.getAgree() == 1) {
+				//同意
+				Device device = new Device();
+				device.setId(record.getDeviceId());
+				device.setAuditStatus("在库");
+				device.setIsDamage(auditVo.getIsDamage());
+				deviceService.updateById(device);
+
+				device.setUserId(null);
+				deviceService.lambdaUpdate()
+						.eq(Device::getId, record.getDeviceId())
+						.set(Device::getUserId, null)
+						.set(Device::getAuditStatus, "在库")
+						.set(Device::getRemark, null)
+						.set(Device::getOutTime, null)
+						.set(Device::getInTime, new Date())
+
+						.update();
+				DeviceRecord deviceRecord = new DeviceRecord();
+				deviceRecord.setId(recordId);
+				deviceRecord.setAgree(1);
+				deviceRecord.setType("已归还");
+				deviceRecord.setInTime(new Date());
+				recordService.updateById(deviceRecord);
+
+			} else {
+				//还原用户
+//			device.setUserId(null);
+//			deviceService.lambdaUpdate()
+//					.set(Device::getUserId, null)
+//					.set(Device::getAuditStatus,"在库")
+//					.update();
+				deviceService.lambdaUpdate()
+						.eq(Device::getId, record.getDeviceId())
+						.set(Device::getAuditStatus, "已借出")
+						.set(Device::getUserId, record.getUserId())
+						.update();
+
+				record.setAgree(1);
+				record.setType("已借出");
+				record.updateById();
+
+			}
+		}
+		return R.ok();
+	}
 
 
 	@GetMapping("/info/{id}")
@@ -237,6 +319,7 @@ public class DeviceController {
 
 		return R.ok(byId);
 	}
+
 	@PostMapping("/update")
 	public R update(Device device) {
 
