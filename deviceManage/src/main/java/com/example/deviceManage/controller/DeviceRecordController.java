@@ -38,7 +38,7 @@ public class DeviceRecordController {
 //						.eq("type", "借出审核中")
 //				)
 				.eq(userId!=null,"r.user_id", userId)
-				.orderByAsc("d.type_name")
+				.orderByAsc("d.type_name","d.device_number")
 		);
 
 		return R.ok(list);

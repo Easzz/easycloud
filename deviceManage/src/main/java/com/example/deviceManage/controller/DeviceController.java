@@ -57,7 +57,7 @@ public class DeviceController {
 							.or()
 							.eq("audit_status", "归还审核中");
 				})
-				.orderByAsc("type_name")
+				.orderByAsc("type_name","device_number")
 		);
 
 		List<Device> records = list.getRecords();
