@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.example.caseProject.mapper.DeviceRecordMapper">
+
+    <select id="selectPageVo" resultType="com.example.caseProject.entity.DeviceRecord">
+        select r.*,d.device_name,d.is_damage,d.type_name,d.device_number,d.damage_text,u.real_name from device_record r left join  device d on r.device_id=d.id
+        left join user u on u.id=r.user_id
+         ${ew.customSqlSegment}
+    </select>
+</mapper>

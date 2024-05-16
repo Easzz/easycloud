@@ -1,0 +1,10 @@
+package com.example.caseProject.mapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.caseProject.entity.DeviceType;
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
+public interface DeviceTypeMapper extends BaseMapper<DeviceType> {
+
+}

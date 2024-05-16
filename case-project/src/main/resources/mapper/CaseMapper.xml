@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.example.caseProject.mapper.CaseMapper">
+
+	<select id="selectPaveVo" resultType="com.example.caseProject.entity.CaseProject">
+			select c.*,ct.type_name from case_project c left join case_type ct on c.type_id=ct.id
+			 ${ew.customSqlSegment}
+	</select>
+</mapper>
