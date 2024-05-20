@@ -1,156 +1,17 @@
 spring:
   datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    druid:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://172.16.0.4:3306/anxunwang?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=GMT%2B8
-      username: root
-      password: wrsXdHtijZd@opcJ
-      initial-size: 10
-      max-active: 100
-      min-idle: 10
-      max-wait: 60000
-      pool-prepared-statements: true
-      max-pool-prepared-statement-per-connection-size: 20
-      time-between-eviction-runs-millis: 60000
-      min-evictable-idle-time-millis: 300000
-      #Oracle需要打开注释
-      #validation-query: SELECT 1 FROM DUAL
-      test-while-idle: true
-      test-on-borrow: false
-      test-on-return: false
-      stat-view-servlet:
-        enabled: true
-        url-pattern: /druid/*
-        #login-username: admin
-        #login-password: admin
-      filter:
-        stat:
-          log-slow-sql: true
-          slow-sql-millis: 1000
-          merge-sql: false
-        wall:
-          config:
-            multi-statement-allow: true
-  redis:
-    open: true  # 是否开启redis缓存  true开启   false关闭
-    database: 1
-    host: localhost
-    port: 6380
-    password: 147258369    # 密码（默认为空）
-    timeout: 6000ms  # 连接超时时长（毫秒）
-    jedis:
-      pool:
-        max-active: 1000  # 连接池最大连接数（使用负值表示没有限制）
-        max-wait: -1ms      # 连接池最大阻塞等待时间（使用负值表示没有限制）
-        max-idle: 250      # 连接池中的最大空闲连接
-        min-idle: 5       # 连接池中的最小空闲连接
-axkj:
-  sms:
-    open: true
-    cdkey: GZDLBWBQF1499616185
-    password: HTE2P
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+#    password: 123456
+        password: 123
+        url: jdbc:mysql://10.100.104.36:3306/case-project?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8
+#    url: jdbc:mysql://localhost:3306/case-project?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8
 
+# 指定文件上传路径
 fileupload:
-  #文件上传物理地址
-  uploadPath: D:\Java\apache-tomcat-7.0.85-upload\webapps\AnPeiUpload
-  #文件显示服务地址
-  showPath: https://image.anxunwang.cn/
-  #人脸上传物理地址
-  facePath: D:\Java\apache-tomcat-7.0.85-upload\webapps\AnPeiUpload\
-  #人脸显示地址
-  showFacePath: https://face-show.anxunwang.cn/
-  #人脸接口上传地址,后面不能跟/
-  #faceUploadPath: http://face-upload.anxunwang.cn/faceUpload
-  faceUploadPath: http://172.16.0.13:7060/faceUpload
-  #ffmpeg地址
-  ffmpegApp: D:\\ffmpeg\\bin\\ffmpeg.exe
-  #上传文件服务地址
-  uploadSeverUrl: https://upload.anxunwang.cn/upload
+  uploadPath: D:\\upload
+#  uploadPath: /home/monkey/upload
+#  uploadPath: /root/upload
 
 
-vod:
-  appId: 1256469133
-  secretId: AKIDHZdRpTmKDqFqqrfARbWH2DD3rP5XlhZC
-  secretKey: iMksmRqzta4XlmXAdqtteASUHtGSbV9Z
-  # 视频签名key
-  video_sign_key: iN0fUaqI2USySuxl4qjJ
-  # 视频分发主域名
-  video_main_domain: 1256469133.vod2.myqcloud.com
-  # 视频分发子域名
-  video_sub_domain: cloudvideo.anxunwang.cn
-  # 过期时间：单位秒(12小时)
-  video_expire_in: 43200
-
-examScore:
-  questionsCount: 20 #考题题数
-
-wxpay:
-  spbillCreateIp: 61.145.180.158
-  notifyUrl:  https://wap-api.anxunwang.cn/weixin/notify
-  businessChargeNotifyUrl:  https://wap-api.anxunwang.cn/weixin/payNotify
-  tradeTypeApp: APP
-  appId: wx9e476659520376d1
-  key: Sb9nz7PLlbbb8wKiJVdH41TCHXDTjv3k
-  mchId: 1560374901
-  certPath: D:\upload\download\apiclient_cert.p12
-  spdbMchId: 103550094854
-  spdbAppId:
-  spdbPrivateKey: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCqVj0LleJQwfKM0nNQLDXadUsAPpbOiX9yZgMzACqNXt/bLHeHXcc8ZgdqzabDnlObby7kLplBvHkSLvSoGwz4a7j5SVzm2jKOYqlFnJRfZ+BOON2s32TqSxCFjYl+DPJvGQYtpRp2VclzNYo9DCN3myE1LaJPEm0hpG4ldZNViHlFFMnQ4dWqx2WvNzqVnaT8bMeKnKe4grHez9v3EokPFZ2mJd/RmGVdtj6A3aBJrZT37Ah+4nglHqpzubik1I/likNhWn6bZHQTzGF34JA5xZb97A1o3vTHxwWxO2NBdQRlWFyImSSoqqmySr1HiAHvVl4znxSvMSnPS0dOTLMtAgMBAAECggEAB2r2AZknX+jyTRulFeq29aqB96LCIoBuYmb64K+zKrDlAsBu/CAjWwf+brJB/ubYMT6oRhuZZPl2NEqDMQbsi6z1QzXkq9D4vqahRHzLIVR+uilTzgF0fZeDQq2lPS4HKLtoP3ifLGQT/8ZnHL14le7VhWFVXigpRHvKqCr0nZbfbk9b6ly55+GINXr5nJR3Lx2zhvNij3/JFfxfaA3s3gey0A0OSCoKcSrHpg9mplv5tJl/IZjCQNcs0Qd8q2OgxaTiTgjFd/KQprKkzVwiKZkcbLm6EKz3NPIkf7purSxbxKA9J7eEg7W5IFv7jXAYkXDsnvBA8DSimU4JiaT6gQKBgQD3S1UqQ/Ec6caXcQGQZRol8i3c2hIsOr1vEKFBWKjhZQN1SlBK97wzqBPJh7tQHboESUlch4WoaFy4YhsfCTbsB15PbdagOeQkBN9QYp9e65GmKqfG6LIAXGf6PBj48zOfLa5mBrGXre8sIOWNHXbInFvPhiSxinTbKZQMW1M9XQKBgQCwVVmGo6qNpONgXGvsmz+GnLvmJW0a5W5hUs4kiXuw/zvhstqTIIOEe5RkCNOsZ0aezZA3zFEqApgtQGo+N05U/5II27z2LR07UHgk/uzrL2lmKnCx7HBrMDp/XB1bF6A2TnJej9ZOzD9FxJp6IMUoroRUNNg5H5JBjoQ0suIgEQKBgBrimMa4jj0beVi7k3T0WOxpMO1C1Bj05eVuRGnLTsj6Z27X/nS4DED9c/FEDWw/XxraMNybaz+M4Q+2ssYkBVGR14IBKgVPZes4kGK35iW2rKYJGyZ34+pAIZnF8N0X67PRjpVPAv2/jjIY/XvjCSf0P9MG/XRD3kJ5ebwCLcGNAoGANj9rtXIwjDcIBKMqSLZSStV5MQqekEG5PZO9+5uYRBGhmIPvnofILj/enQ/iHw3+ueg/0Aq5hZUawAErLkzRenDNuo/viETE03SkIa2TsZ76bAXuea5lv3Qs6vWpylZwYYSsxs61fbR0WsBrTds7DJLz/vvq8Vf3JNf1cEkALCECgYEA1OcQTgowCkgRqOySQuxlb2FJoTMpMvV3tqOnAGmsjj7xuxIp3KH7SCHoINPKpLK2iC4PMwt6RAWkCOia85Nn9o2fhDN8E1s0sZAZT06TYt6Oi2RulIFLq6Tv9mT2O+1JfLo+p8LTbJZtewVF4SRl9NpyJj4md22E4MivJUQTYAY=
-  spdbPublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApW1T5ZzOr8OSiA2L1VWgjNtWmWU5oZ65uxqEZwHldQfRUvWRJUQgF/auOZoYYn1ld48RxfGk0oqD/v6JakHSa17kvaTwlUFcS7k9rHebVKo2KOU5C4WgCP2L11hJBbOY8uBgcc7q4EJIylO7RaEEtz6OycVyrTDmnfzHjzb1NdLmlEGbWzR9xMo5QCC4baRgBH3WNdh/L0pM/z3sFDKRvjDfQOb062gScmbS2xXqRiPFfXKkVK544aHxLz9WRkD/kvJbceBDWh+to+o2zMNMuUUeMZ72tSKn9ZeUWA0Ngh7Jo3gsXVcV+Tv0t24QKBv4GBTQAzs8IQXrnVSjj0OOxQIDAQAB
-  spdbKey: 7bca86e0719b2bb6784f31cae1edc1ab
-  spdbRequestUrl: https://pay.spdb.swiftpass.cn/pay/gateway
-  wxMpNotifyUrl:  https://wap-api.anxunwang.cn/wxMpPay/wxMpPayNotify
-  employeeNotifyUrl: https://wap-api.anxunwang.cn/employeePay/employeeWxPayNotify
-
-defaultPassword: 123456
-
-
-
-weixin:
-  #公众号id
-  app_id: wx851322c87897e14d
-  #公众号秘钥
-  app_secret: bd7b002c6d376240f5584c370815f274
-  #获取code Url
-  web_authorization_url: https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx851322c87897e14d&redirect_uri=authorizeRedirectUri&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect
-  #获取code token url
-  web_access_token_url: https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx851322c87897e14d&secret=bd7b002c6d376240f5584c370815f274&code=CODE&grant_type=authorization_code
-  #获取access_token url
-  access_token_url: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx851322c87897e14d&secret=bd7b002c6d376240f5584c370815f274
-  #js_api_ticket url
-  js_api_ticket_url: https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi
-  #接收微信跳转回来的链接，携带code (前端地址)
-  wechat_redirect_url:  /%23/wxLogin
-
-
-android:
-  appId: IDA1dHm4
-  secret: Qw81Io0pasZ4vHXo9jguQc7yxMtFMsFsuD9mrndigsrAjLGgOB14UQnLI3dDsZr4
-  keyLicence: PzBkLj/JF7MrNX0dm70c1dyO72prcYTQ0Isf1NzuDjiDVTBARFJwW20QhbxiPt2HcgPWFoUbPVzu3XGxOM8UBMwB5cgHtwCYHM+WixfJJkW3K5A3O5HtE/TMGrlYMaO7f69q47T+9WkdqkE+OXihCK2JNLyAgOQFBs3aeawEyxlZs9LfAgcwzKXCHxwQ2K4EjiJBzOeKdS6oCE/v5LneCDwog6VCakk1Xwse9bjgygMTsHsowSDuc5Ol9TJRMmRGQsP0lgHdL1BXlOQwMo7kSjNd/a5FYE4ShJBV3xSvnO1a72cO6B3yjE3Z9uXZ8lj8OtTellNm9lgWZr/P9NY2Aw==
-  version: 1.0.0
-
-# 第三方配置
-third:
-  push:
-    ios:
-      app_id: EESNqklvtP7hjC6uMJ3Qv4
-      app_key: xGYBqQFunI9JJXOOYZS3d3
-      master_secret: p7jcbN8APD9YH89G1lfCQ5
-      url: http://sdk.open.api.igexin.com/apiex.htm
-    android:
-      app_id: 1SLk3nBaBi7QYbCd8MRJ34
-      app_key: AeSy3GW3Ow5b3ive47P1o7
-      master_secret: fATyy8u31x5L1zDnZmVZ86
-      url: http://sdk.open.api.igexin.com/apiex.htm
-
-#腾讯云的人脸认证
-face:
-  secretId: AKIDsiTjYZqvMn6HvZilibdyqCqKiH8r45Wo
-  secretKey: SvGRVTL3jJnIcIwcKxVzJXvYAe3VsjAP
-  callBackUrl: http://sdf
-
-
-swagger:
-  is:
-    enable: false

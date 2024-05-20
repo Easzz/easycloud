@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>deviceManage</artifactId>
+	<artifactId>case-project</artifactId>
 	<version>1.1-SNAPSHOT</version>
-	<name>deviceManage</name>
+	<name>case-project</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

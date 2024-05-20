@@ -153,7 +153,7 @@ public class DeviceController {
 				record.setAgree(1);
 				record.setType("已借出");
 				record.setOutTime(new Date());
-				record.updateById();
+					record.updateById();
 
 
 			} else {
