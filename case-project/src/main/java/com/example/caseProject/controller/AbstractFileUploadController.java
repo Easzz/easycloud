@@ -19,7 +19,7 @@ import java.util.UUID;
  * Date: 2018-10-24 18:22
  */
 @Slf4j
-public abstract class AbstractFileUploadController{
+public abstract class AbstractFileUploadController {
 
 	@Autowired
 	private FileUploadConfig fileUploadConfig;
@@ -53,12 +53,21 @@ public abstract class AbstractFileUploadController{
 
 		//需要保存的文件名字
 		String fileName = UUID.randomUUID().toString().replace("-", "");
-		String saveFileName = fileName + suffix;
 
-		//文件相对路径
-		String abstractPath = "upload/" + date + "/" + saveFileName;
+
+		String saveFileName = originFileName;
+
+		if ("caseProject".equalsIgnoreCase(backValue)) {
+			folder = folder + File.separator + "plan";
+		}
+
+		if ("item".equalsIgnoreCase(backValue)) {
+			folder = folder + File.separator + "item";
+		}
+
+
 		//本地文件
-		File localFile = new File(folder + File.separator + date, saveFileName);
+		File localFile = new File(folder + File.separator , saveFileName);
 
 		//判断目录是否存在，如果不存在就全部创建
 		if (!localFile.getParentFile().exists()) {
@@ -83,10 +92,21 @@ public abstract class AbstractFileUploadController{
 			//保存至本地
 			file.transferTo(localFile);
 
+
+			if ("caseProject".equalsIgnoreCase(backValue)) {
+
+				saveFileName = File.separator + "plan"  + File.separator + saveFileName;
+			}
+
+			if ("item".equalsIgnoreCase(backValue)) {
+				saveFileName = File.separator + "item" + File.separator + saveFileName;
+			}
+
 			resultMap.put("realityName", originFileName);
 //			resultMap.put("fileUrl", "upload" + File.separator + date + File.separator + saveFileName);
 
-			resultMap.put("fileUrl",   File.separator + date + File.separator + saveFileName);
+
+			resultMap.put("fileUrl", saveFileName);
 			resultMap.put("fileName", saveFileName);
 			resultMap.put("fileType", mediaType);
 			resultMap.put("code", "0");

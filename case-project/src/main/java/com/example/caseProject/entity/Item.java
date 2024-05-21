@@ -22,6 +22,8 @@ public class Item extends Model<Item> {
 	@TableId
 	private Long id;
 	private String itemName;
+
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	private Date itemDate;
 
 

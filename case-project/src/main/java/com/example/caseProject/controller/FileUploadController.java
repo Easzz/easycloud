@@ -14,6 +14,22 @@ import org.springframework.web.multipart.MultipartFile;
 @Api(tags = "FileUploadController", description = "文件上传")
 public class FileUploadController extends AbstractFileUploadController {
 
+    @PostMapping(value = "/uploadCaseProject", consumes = "multipart/*", headers = "content-type=multipart/form-data")
+    @ApiOperation(value = "上传")
+    public Object uploadCaseProject(@RequestParam("file") @ApiParam(value = "上传的文件", required = true) MultipartFile file) {
+
+        return upload(file,"caseProject");
+    }
+
+
+    @PostMapping(value = "/uploadItem", consumes = "multipart/*", headers = "content-type=multipart/form-data")
+    @ApiOperation(value = "上传")
+    public Object uploadItem(@RequestParam("file") @ApiParam(value = "上传的文件", required = true) MultipartFile file) {
+
+        return upload(file,"item");
+    }
+
+
     @PostMapping(value = "/upload", consumes = "multipart/*", headers = "content-type=multipart/form-data")
     @ApiOperation(value = "上传")
     public Object uploadFile(@RequestParam("file") @ApiParam(value = "上传的文件", required = true) MultipartFile file) {

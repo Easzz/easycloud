@@ -24,13 +24,12 @@ public class ItemController {
 
 
 	@GetMapping("/list")
-
 	public R<IPage<Item>> list(Integer page, Integer limit,Item item) {
 
 
 		IPage<Item> list = itemService.page(new Page<>(page, limit), new LambdaQueryWrapper<Item>()
 
-				.eq(StringUtils.isNotBlank(item.getItemName()), Item::getItemName, item.getItemName())
+				.like(StringUtils.isNotBlank(item.getItemName()), Item::getItemName, item.getItemName())
 
 		);
 
