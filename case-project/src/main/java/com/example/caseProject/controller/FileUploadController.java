@@ -30,6 +30,15 @@ public class FileUploadController extends AbstractFileUploadController {
     }
 
 
+
+
+    @PostMapping(value = "/uploadStandard", consumes = "multipart/*", headers = "content-type=multipart/form-data")
+    @ApiOperation(value = "上传")
+    public Object uploadStandard(@RequestParam("file") @ApiParam(value = "上传的文件", required = true) MultipartFile file) {
+
+        return upload(file,"standard");
+    }
+
     @PostMapping(value = "/upload", consumes = "multipart/*", headers = "content-type=multipart/form-data")
     @ApiOperation(value = "上传")
     public Object uploadFile(@RequestParam("file") @ApiParam(value = "上传的文件", required = true) MultipartFile file) {

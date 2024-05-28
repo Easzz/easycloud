@@ -65,6 +65,11 @@ public abstract class AbstractFileUploadController {
 			folder = folder + File.separator + "item";
 		}
 
+		if ("standard".equalsIgnoreCase(backValue)) {
+			folder = folder + File.separator + "spec";
+		}
+
+
 
 		//本地文件
 		File localFile = new File(folder + File.separator , saveFileName);
@@ -100,6 +105,11 @@ public abstract class AbstractFileUploadController {
 
 			if ("item".equalsIgnoreCase(backValue)) {
 				saveFileName = File.separator + "item" + File.separator + saveFileName;
+			}
+
+
+			if ("standard".equalsIgnoreCase(backValue)) {
+				saveFileName = File.separator + "spec" + File.separator + saveFileName;
 			}
 
 			resultMap.put("realityName", originFileName);
