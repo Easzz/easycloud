@@ -6,12 +6,10 @@ package com.example.caseProject.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.caseProject.entity.CaseProject;
+import com.example.caseProject.config.R;
 import com.example.caseProject.entity.PermissionUser;
 import com.example.caseProject.entity.User;
-import com.example.caseProject.mapper.PermissionUserMapper;
 import com.example.caseProject.mapper.UserMapper;
-import com.example.caseProject.config.R;
 import com.example.caseProject.service.PermissionUserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,19 +22,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/permissionUser")
+public class PermissionUserController {
 
     @Autowired
     private UserMapper userMapper;
 
 	@Autowired
 	private PermissionUserService permissionUserService;
-    @GetMapping("/login")
-    public R login(User user) {
+    @GetMapping("/check")
+    public R login(Integer userId) {
 		User one = userMapper.selectOne(new QueryWrapper<User>()
-				.eq("username", user.getUsername())
-				.eq("pwd", user.getPwd())
+				.eq("id", userId)
+
 				.eq("valid", 1)
 		);
 		if (one!=null){
