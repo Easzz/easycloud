@@ -3,6 +3,7 @@ package com.example.caseProject.controller;
  * Created by shenxuan on 2021/5/28 11:51
  */
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.caseProject.entity.CaseType;
@@ -21,7 +22,7 @@ public class CaseTypeController {
 
 	@GetMapping("/list")
 
-	public R<IPage<CaseType>> list(Integer page, Integer limit) {
+	public R<IPage<CaseType>> list(Integer page, Integer limit,Integer userId) {
 		if (null == page) {
 			page = 0;
 		}
@@ -29,7 +30,10 @@ public class CaseTypeController {
 			limit = -1;
 		}
 
-		IPage<CaseType> list = caseTypeService.page(new Page<>(page, limit));
+		IPage<CaseType> list = caseTypeService.page(new Page<>(page, limit),new QueryWrapper<CaseType>()
+
+				.apply("FIND_IN_SET({0},user_ids)",userId)
+		);
 
 		return R.ok(list);
 	}

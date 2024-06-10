@@ -25,10 +25,11 @@ public class CaseProjectController {
 
 
 	@GetMapping("/list")
-	public R<IPage<CaseProject>> list(Integer page, Integer limit, CaseProject caseInfo) {
+	public R<IPage<CaseProject>> list(Integer page, Integer limit, CaseProject caseInfo,Integer userId) {
 
 		IPage<CaseProject> list = caseService.selectPageVo(new Page<>(page, limit), new QueryWrapper<CaseProject>()
 				.eq(caseInfo.getTypeId() != null, "c.type_id", caseInfo.getTypeId())
+				.apply("FIND_IN_SET({0},ct.user_ids)",userId)
 		);
 
 		return R.ok(list);

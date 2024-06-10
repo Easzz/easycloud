@@ -23,6 +23,8 @@ public class CaseType extends Model<CaseType> {
 	private Long id;
 	private String typeName;
 
+	private String userIds;
+
 	//	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	@TableField(value = "gmt_create", fill = FieldFill.INSERT)
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
