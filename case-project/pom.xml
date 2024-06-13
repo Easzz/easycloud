@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>case-project</artifactId>
-	<version>1.2-SNAPSHOT</version>
+	<version>1.4-SNAPSHOT</version>
 	<name>case-project</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -212,6 +212,11 @@
 			<groupId>cn.hutool</groupId>
 			<artifactId>hutool-crypto</artifactId>
 			<version>${hutool.crypto.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>p6spy</groupId>
+			<artifactId>p6spy</artifactId>
+			<version>3.9.1</version>
 		</dependency>
 
 

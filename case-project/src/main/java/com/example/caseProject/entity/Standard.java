@@ -29,8 +29,9 @@ public class Standard extends Model<Standard> {
 	@TableField(exist = false)
 	private String updateTimeStr;
 
-	private String caseVersion;
 
+	private String caseVersion;
+	private String updateText;
 	private String fileUrl;
 	private String realityName;
 
@@ -50,3 +51,5 @@ public class Standard extends Model<Standard> {
 	private String typeName;
 
 }
+
+
